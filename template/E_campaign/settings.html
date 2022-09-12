@@ -1,0 +1,276 @@
+{% extends 'E_campaign/base.html'%} {% load static %} {%block content%}
+
+<div
+    id="toast-simple"
+    style="
+        position: fixed;
+        right: 20px;
+        top: 30px;
+        box-shadow: 0 0 10px rgb(35, 34, 34);
+        color: white;
+    "
+    class="items-center p-6 w-full max-w-xs text-white-600 bg-white rounded-lg shadow dark:text-gray-500 dark:divide-gray-700 space-y dark:bg-gray-800"
+    role="alert"
+>
+    <b>
+        <p style="font-size: 25px">Important Information</p>
+        <hr />
+        <br />
+        <p style="font-size: 13px" class="pl-4 text-sm font-normal">
+            >> Formate of smtp file(smtps.csv):<br />
+            Email,Password,SMTP,PORT,Limit,No_of_send<br /><br />
+        </p>
+        <p style="font-size: 13px" class="pl-4 text-sm font-normal">
+            >> column name of contacts in data file must be contacts.<br /><br />
+        </p>
+        <p style="font-size: 13px" class="pl-4 text-sm font-normal">
+            >> column name of subjects in file(subjects.csv) must be subjects
+            too.<br />
+        </p>
+    </b>
+</div>
+
+<div
+    id="toast-success"
+    style="position: fixed; top: 30px; right: 30px; visibility: hidden"
+    class="flex items-center p-4 mb-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+    role="alert"
+>
+    <div
+        class="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200"
+    >
+        <svg
+            aria-hidden="true"
+            class="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clip-rule="evenodd"
+            ></path>
+        </svg>
+        <span class="sr-only">Check icon</span>
+    </div>
+    <div id="notification" class="ml-3 text-sm font-normal">
+        Loaded Successfully!
+    </div>
+    <button
+        type="button"
+        id="hide_success"
+        class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+        data-dismiss-target="#toast-success"
+        aria-label="Close"
+    >
+        <span class="sr-only">Close</span>
+        <svg
+            aria-hidden="true"
+            class="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+            ></path>
+        </svg>
+    </button>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        $("#hide_success").on("click", function () {
+            $("#toast-success").hide()
+        })
+    </script>
+</div>
+
+<section class="text-gray-700 body-font relative">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %} {{ form.non_field_errors }} {{ form.non_form_errors }}
+        {{ form.errors }}
+        <div class="container px-5 py-24 mx-auto">
+            <div class="flex flex-col text-center w-full mb-8">
+                <h1
+                    class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900"
+                >
+                    SETTINGS
+                </h1>
+                <center><hr width="200" /></center>
+            </div>
+            <div class="lg:w-1/2 md:w-2/3 mx-auto">
+                <div class="flex flex-wrap -m-2">
+                    <div class="p-2 w-1/2">
+                        <div class="relative form-group">
+                            <label
+                                for="smtp"
+                                class="leading-7 text-sm text-gray-600"
+                                >SMTP (File name have to be smtps.csv)</label
+                            >
+                            {{form.smtp}}
+                            <!-- <input
+                                type="file"
+                                id="smtp"
+                                name="smtp"
+                                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            /> -->
+                        </div>
+                    </div>
+                    <div class="p-2 w-1/2">
+                        <div class="relative form-group">
+                            <label
+                                for="data"
+                                class="leading-7 text-sm text-gray-600"
+                                >Data</label
+                            >
+                            {{form.data}}
+                            <!-- <input
+                                type="file"
+                                id="data"
+                                name="data"
+                                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            /> -->
+                        </div>
+                    </div>
+                    <div class="p-2 w-1/3">
+                        <div class="relative form-group">
+                            <label
+                                for="content"
+                                class="leading-7 text-sm text-gray-600"
+                                >Content</label
+                            >
+                            {{form.content}}
+                            <!-- <input
+                                type="file"
+                                id="smtp"
+                                name="smtp"
+                                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            /> -->
+                        </div>
+                    </div>
+                    <div class="p-2 w-1/3">
+                        <div class="relative form-group">
+                            <label
+                                for="attachments"
+                                class="leading-7 text-sm text-gray-600"
+                                >Attachments</label
+                            >
+                            {{form.attachments}}
+                            <!-- <input
+                                type="file"
+                                id="data"
+                                name="data"
+                                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            /> -->
+                        </div>
+                    </div>
+                    <div class="p-2 w-1/3">
+                        <div class="relative form-group">
+                            <label
+                                for="subjects"
+                                class="leading-7 text-sm text-gray-600"
+                                >Subjects ( subject.csv)</label
+                            >
+                            {{form.subjects}}
+                            <!-- <input
+                                type="file"
+                                id="data"
+                                name="data"
+                                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            /> -->
+                        </div>
+                    </div>
+                    <div class="p-2 w-1/2">
+                        <div class="relative form-group">
+                            <label
+                                for="proxies"
+                                class="leading-7 text-sm text-gray-600"
+                                >Proxies</label
+                            >
+                            {{form.proxies}}
+                            <!-- <input
+                                type="url"
+                                id="proxies"
+                                placeholder="http://example-proxy.com:8000"
+                                name="proxies"
+                                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            /> -->
+                        </div>
+                    </div>
+                    <div class="p-2 w-1/2">
+                        <div class="relative form-group">
+                            <label
+                                for="phone"
+                                class="leading-7 text-sm text-gray-600"
+                                >Phones</label
+                            >
+                            {{form.phone}}
+                            <!-- <input
+                                type="text"
+                                placeholder="+91 8738738890"
+                                id="phone"
+                                name="phone"
+                                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            /> -->
+                        </div>
+                    </div>
+                    <div class="p-2 w-1/2">
+                        <div class="relative form-group">
+                            <label
+                                for="time_delay"
+                                class="leading-7 text-sm text-gray-600"
+                                >Time Delay</label
+                            >
+                            {{form.time_delay}}
+                            <!-- <input
+                                type="number"
+                                placeholder="10"
+                                id="time_delay"
+                                name="time_delay"
+                                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            /> -->
+                        </div>
+                    </div>
+                    <div class="p-2 w-1/2">
+                        <div class="relative form-group">
+                            <label
+                                for="instance"
+                                class="leading-7 text-sm text-gray-600"
+                                >Create Instance</label
+                            >
+                            {{form.instance}}
+                            <!-- <input
+                                type="number"
+                                placeholder="2"
+                                id="instance"
+                                name="instance"
+                                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            /> -->
+                        </div>
+                    </div>
+
+                    <div class="p-2 w-full">
+                        <button
+                            type="submit"
+                            onclick="load(1);"
+                            class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-10 font-medium focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                        >
+                            Submit
+                        </button>
+
+                        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+                        <script>
+                            function load(pk) {
+                                $("#toast-success").css("visibility", "visible")
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+{%block logout%} {% endblock%} {% endblock%}
