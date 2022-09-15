@@ -25,7 +25,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'template')
 SECRET_KEY = 'django-insecure-!kq#r2qs!!^@$ihv3g$=-v_(o^0k!$4i9i2!967sybn%n+bg6t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -73,20 +73,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
-ASGI_APPLICATION='app.asgi.application'
+ASGI_APPLICATION = 'app.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-CHANNEL_LAYERS={
+CHANNEL_LAYERS = {
     'default': {
-        'BACKEND':'channels_redis.core.RedisChannelLayer',
-        'CONFIG':{
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
             'hosts': [('localhost', 6379)],
         }
     },
 }
-
 
 
 DATABASES = {
@@ -131,8 +130,7 @@ LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "/"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_URL = 'static/'
-STATIC_ROOT=os.path.join(BASE_DIR,'static_media/')
+STATIC_URL = '/static/'
 MEDIA_URL = '/image/'
 
 STATICFILES_DIRS = [
