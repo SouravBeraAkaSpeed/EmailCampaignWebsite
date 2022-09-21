@@ -1,0 +1,23 @@
+#image1{
+    position: fixed;
+    top:auto;
+    opacity:0.5;
+}
+
+
+#image2{
+    position: fixed;
+    top:200px;
+    left:100px;
+    height: 200px;
+    width: 200px;
+}
+
+#image3{
+    position: fixed;
+    top:100px;
+    right:100px;
+    height: 200px;
+    width: 200px;
+}
+

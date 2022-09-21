@@ -10,12 +10,13 @@ from email.mime.image import MIMEImage
 from email import encoders
 from email.header import Header
 from email.utils import formatdate, make_msgid
-import random
+import random,string
 import smtplib
 from asgiref.sync import async_to_sync
 from .Html_to_Pdf_convertor import Convert
 from channels.layers import get_channel_layer
 import traceback
+from datetime import date
 
 now = time.time()
 def leftRotate(arr, d):
@@ -30,28 +31,28 @@ def leftRotatebyOne(arr, n):
 
 def main(delay_per_email,folder):
 
-    
+
     with open(f'{folder}/isrunning.txt','w') as f:
         f.write(str(1))
 
     layer = get_channel_layer()
-    
+
     # notification=NotificationConsumer()
     # # notification.send_message(event)
     # notification.
     # notification.send(text_data=event['message'])
 
     # os.chdir('Manish_project')
-    
-    
-    
+
+
+
     with open(f'{folder}/Body_template.html', 'r') as f:
         msg_body = f.read()
 
-    
+
     # print("\n <----- Please keep this in mind this software will work only when your less secure apps setting" +
     #       "is enabled,\n if it is not enabled you can enable it here: https://myaccount.google.com/lesssecureapps ----->")
-    
+
 
     # os.chdir(f'{folder}/attachments')
     attachments = glob.glob(f"{folder}/attachments/*.pdf")
@@ -62,7 +63,7 @@ def main(delay_per_email,folder):
     # os.chdir('Data/content')
 
     contents = glob.glob(f'{folder}/content/*.html')
-    
+
     bodys = []
 
     for body in contents:
@@ -73,7 +74,7 @@ def main(delay_per_email,folder):
                 "name": body.split(".")[0],
             })
 
-    
+
     # os.chdir('../')
 
 
@@ -81,47 +82,47 @@ def main(delay_per_email,folder):
     csv_files=[]
     for csv in csvs:
         csv_files.append(csv.replace(f"{folder}","").replace("\\",""))
-    
+
 
 
     for file in csv_files:
-        globals()[f"{file.split('.')[0]}"]=[]
+        globals()[f"{file.split('.')[0].replace('/','')}"]=[]
+
         df=pd.read_csv(f"{folder}/{file}")
         for index, column in df.iterrows():
             cols= df.columns
             mydict = {f'{col}':column[col] for col in cols}
-            globals()[f"{file.split('.')[0]}"].append(mydict)
-
-    
+            globals()[f"{file.split('.')[0].replace('/','')}"].append(mydict)
 
 
-    
+
+
     UseHtmlConvertor='n'
     if UseHtmlConvertor == 'y':
-    
+
         Output_pdf_name = input(
             "Enter the name of the file that will be coverted into pdf: ")
 
     i=0
     s=[]
     for contact in contacts:
-        
+
         with open(f'{folder}/isrunning.txt','r') as f:
             r=f.read()
             if int(r) == 0:
                 isrunning=False
             else:
                 isrunning=True
-        
+
         if not isrunning:
-            
+
             break
 
         contact=contact['contacts']
         smtp_index=0
 
 
-        
+
 
         limit_reached = False
         for smtp in smtps:
@@ -133,8 +134,8 @@ def main(delay_per_email,folder):
 
         if limit_reached == True:
             print("Limit of Email Sending is Reached.")
-            
-        
+
+
         try:
             if len(s)==len(smtps):
                 s=[]
@@ -146,13 +147,13 @@ def main(delay_per_email,folder):
                 else:
                     break
             s.append(smtp['Email'])
-            
+
 
             msg = MIMEMultipart()
 
-            
 
-    
+
+
             Email = smtp['Email']
             PassWord = smtp['Password']
             SMTP = smtp['SMTP']
@@ -175,14 +176,23 @@ def main(delay_per_email,folder):
             msg['In-Reply-To'] = contact
             # msg['References'] = contact
 
+            randomnumber=random.randint(100000000000,999999999999)
+            alphanumeric=''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(12))
+            code=random.randint(1000,9999)
+            date1=date.today().strftime(" %d %B %Y")
+            date2=date.today().strftime(" %A %d %B %Y")
             html = msg_body.replace("[body]", Body)
-            
-            for file in csv_files:
-                
-                if  "smtps" not in file:
-                    html = html.replace(f"[{file.split('.')[0]}]", str(globals()[f"{file.split('.')[0]}"][0][f"{file.split('.')[0]}"]))
-    
 
+            for file in csv_files:
+
+                if  "smtps" not in file:
+                    html = html.replace(f"[{file.split('.')[0].replace('/','')}]", str(globals()[f"{file.split('.')[0].replace('/','')}"][0][f"{file.split('.')[0].replace('/','')}"]))
+
+            html=html.replace("[randomnumber]",str(randomnumber))
+            html=html.replace("[alphanumeric]",str(alphanumeric))
+            html=html.replace("[code]",str(code))
+            html=html.replace("[date1]",str(date1))
+            html=html.replace("[date2]",str(date2))
             part = MIMEText(html, 'html')
             msg.attach(part)
             event={
@@ -191,7 +201,7 @@ def main(delay_per_email,folder):
                 }
             async_to_sync(layer.group_send)(
                     'notification', event)
-    #         
+    #
 
             for file in attachments:
                 if Body_name == file.split('.')[0]:
@@ -228,7 +238,7 @@ def main(delay_per_email,folder):
                                     'attachment', filename=image)
                 msg.attach(msgImage)
 
-    
+
 
             if UseHtmlConvertor == 'y':
 
@@ -277,9 +287,9 @@ def main(delay_per_email,folder):
                     isrunning=False
                 else:
                     isrunning=True
-            
+
             if not isrunning:
-                
+
                 break
             if("outlook.com" in Email.split("@") or "icloud.com" in Email.split("@")):
 
@@ -333,7 +343,7 @@ def main(delay_per_email,folder):
 
                     with smtplib.SMTP_SSL(SMTP, PORT) as smtp:
                         smtp.set_debuglevel(1)
-                        
+
                         smtp.login(Email, PassWord)
                         smtp.send_message(msg)
                         smtp.quit()
@@ -359,7 +369,7 @@ def main(delay_per_email,folder):
                                 'message':f"You have problem in {Email}"
                             }
 
-            
+
 
             async_to_sync(layer.group_send)(
                     'notification', event)
@@ -383,24 +393,24 @@ def main(delay_per_email,folder):
             async_to_sync(layer.group_send)(
                     'notification', event)
 
-        
+
         leftRotate(phone_no, 1)
         leftRotate(subjects, 1)
         leftRotate(bodys, 1)
         for file in csv_files:
-                
+
                 if  "smtps" not in file and "contacts" not in file:
-                    leftRotate(globals()[f"{file.split('.')[0]}"], 1)
-                    
-                    
-    
+                    leftRotate(globals()[f"{file.split('.')[0].replace('/','')}"], 1)
+
+
+
         if smtp_index == len(smtps)-1:
             smtp_index = 0
         else:
             smtp_index += 1
 
-        
-        
+
+
 
     print('\n ALL EMAILS ARE SENDED! ')
     event={
@@ -409,4 +419,3 @@ def main(delay_per_email,folder):
         }
     async_to_sync(layer.group_send)(
                     'notification', event)
-    
