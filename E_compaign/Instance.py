@@ -146,7 +146,7 @@ def instance(number_of_send,number_of_instance):
 
     number_of_smtp=int(number_of_instance)
     for i in range(number_of_smtp):
-        copy_tree("Data", "instance"+str(i+1))
+        shutil.copy("Data", "instance"+str(i+1))
 
         
 
