@@ -59,7 +59,7 @@ def Execute_instances(folder,directory_path,number_of_smtp,number_of_send):
         
         for index, col in df.iterrows():
             
-            if rows_per_file*(folder_num-1)<=index<rows_per_file*folder_num:
+            if rows_per_file*(folder_num-1)<=index<=rows_per_file*folder_num:
                     
                     contacts.append(col['contacts'])
                     
@@ -99,10 +99,11 @@ def Execute_instances(folder,directory_path,number_of_smtp,number_of_send):
         PORT=[]
         Limit=[]
         No_of_send=[]
+        From=[]
 
         for index, col in df.iterrows():
             
-            if rows_per_file*(folder_num-1)<=index<rows_per_file*folder_num:
+            if rows_per_file*(folder_num-1)<=index<=rows_per_file*folder_num:
                     
                     Email.append(col['Email'])
                     Password.append(col['Password'])
@@ -110,8 +111,9 @@ def Execute_instances(folder,directory_path,number_of_smtp,number_of_send):
                     PORT.append(col['PORT'])
                     Limit.append(col['Limit'])
                     No_of_send.append(col['No_of_send'])
+                    From.append(col['From'])
 
-        df2=pd.DataFrame({'Email':Email,'Password':Password,'SMTP':SMTP,'PORT':PORT,'Limit':Limit,'No_of_send':No_of_send}) 
+        df2=pd.DataFrame({'Email':Email,'Password':Password,'SMTP':SMTP,'PORT':PORT,'From':From,'Limit':Limit,'No_of_send':No_of_send}) 
         df2.to_csv(f'{folder}/smtps.csv',index=False)        
         
         # shutil.move(f'{folder}/smtps.csv', f'Data/smtps.csv')
