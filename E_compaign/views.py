@@ -34,13 +34,21 @@ def setting(request):
         if request.method =='POST':
             form = UploadFileForm(request.POST, request.FILES)
             if form.is_valid():
-                handle_smtp_file(request.FILES['smtp'])
-                handle_data_file(request.FILES['data'])
+                if "smtp" in request.FILES.keys() and  "data" in request.FILES.keys() and "content" in  request.FILES.keys() and "attachments" in request.FILES.keys() and "subjects" in request.FILES.keys():
+                    delete_previous_data()
+                    
+                if "smtp" in request.FILES.keys():
+
+                    handle_smtp_file(request.FILES['smtp'])
+                if "data" in request.FILES.keys():
+                    handle_data_file(request.FILES['data'])
                 
-                
-                handle_content_file(request.FILES['content'])
-                handle_attachments_file(request.FILES['attachments'])
-                handle_subjects_file(request.FILES['subjects'])
+                if "content" in  request.FILES.keys():
+                   handle_content_file(request.FILES['content'])
+                if "attachments" in request.FILES.keys():
+                    handle_attachments_file(request.FILES['attachments'])
+                if "subjects" in request.FILES.keys():
+                    handle_subjects_file(request.FILES['subjects'])
                 
                 proxies=request.POST.get('proxies')
                 phone=request.POST.get('phone')
@@ -80,6 +88,7 @@ def dashboard(request,pk=None):
             
             df=pd.read_csv('Data/smtps.csv')
             no_of_smtp=df.shape[0]
+            print(no_of_smtp)
             df=pd.read_excel('Data/Data.xlsx')
             contacts=df.shape[0]
             contents=len(os.listdir("Data/content/"))
@@ -132,11 +141,20 @@ def dashboard(request,pk=None):
                     no_of_instance=str(f.read())
             event={
                         'type':'send_message',
-                        'message':f"Starting Campaign..."
+                        'message':f"Starting Campaign...",
+                        'isStarting':True
                     }
             async_to_sync(layer.group_send)(
                         'notification', event)
             instance(no_of_delay,no_of_instance )
+
+            event={
+                        'type':'send_message',
+                        'message':f"STOP",
+                        'isStarted':True
+                    }
+            async_to_sync(layer.group_send)(
+                        'notification', event)
             # t1 = threading.Thread(target=main, args=(no_of_delay,))
             # t1.start()
             # EmailThread(no_of_delay).start()
@@ -160,7 +178,29 @@ def dashboard(request,pk=None):
             async_to_sync(layer.group_send)(
                         'notification', event)
         
-        
+        if pk==4:
+
+            with open("./isPause.txt","w") as f:
+                f.write(str(1))
+            event={
+                        'type':'send_message',
+                        'message':f"PLAY",
+                        'isPaused':True
+                    }
+            async_to_sync(layer.group_send)(
+                        'notification', event)
+
+        if pk==5:
+
+            with open("./isPause.txt","w") as f:
+                f.write(str(0))
+            event={
+                        'type':'send_message',
+                        'message':f"PAUSE",
+                        'isPaused':True
+                    }
+            async_to_sync(layer.group_send)(
+                        'notification', event)
 
         
         context={

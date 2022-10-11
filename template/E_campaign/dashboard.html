@@ -526,13 +526,24 @@
             </div>
         </div>
 
-        <button
-            onclick="start(1);"
-            id="start"
-            class="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
-        >
-            START CAMPAIGN
-        </button>
+        <div class="flex items-center" style="margin-left: 43%">
+            <button
+                onclick="start(1);"
+                id="start"
+                class="mx-2 mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+            >
+                START CAMPAIGN
+            </button>
+
+            <button
+                onclick="pause(4);"
+                id="pause"
+                style="visibility: hidden"
+                class="mx-2 mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+            >
+                PAUSE
+            </button>
+        </div>
     </div>
 </section>
 
@@ -541,6 +552,17 @@
     let notificationSocket = new WebSocket(
         "ws://" + window.location.host + "/ws/notification/"
     )
+
+    function pause(pk) {
+        if (document.getElementById("pause").innerHTML == "PAUSE") {
+            document.getElementById("pause").innerHTML = "PLAY"
+            $.get("dashboard/" + pk, function (data) {})
+        } else {
+            document.getElementById("pause").innerHTML = "PAUSE"
+
+            $.get("dashboard/" + 5, function (data) {})
+        }
+    }
     function start(pk) {
         if (document.getElementById("start").innerHTML != "STOP") {
             notificationSocket = new WebSocket(
@@ -552,6 +574,7 @@
                     $("#toast-danger").css("visibility", "visible")
                 } else {
                     $("#toast-interactive").css("visibility", "visible")
+                    $("#pause").css("visibility", "visible")
                 }
             })
         } else {
@@ -560,6 +583,7 @@
 
             $.get("dashboard/" + 3, function (data) {
                 $("#draggable").hide()
+                $("#pause").css("visibility", "hidden")
             })
         }
     }
@@ -569,12 +593,33 @@
 
     notificationSocket.onmessage = function (e) {
         const data = JSON.parse(e.data)
-        console.log(data.message)
+        console.log(data)
+        let isStart = data.isStarting || false
+        let isStarted = data.isStarted || false
+        let isPaused = data.isPaused || false
+        let isLog = data.isLog || false
 
         // Do some stuff...
+        if (!isStart && !isStarted && !isPaused) {
+            document.querySelector("#log").innerHTML +=
+                "<p class='p-1'>" + data.message + "</p>"
+        }
 
-        document.querySelector("#log").innerHTML +=
-            "<p class='p-1'>" + data.message + "</p>"
+        if (isLog) {
+            document.querySelector("#logging").innerHTML +=
+                "<p class='p-1'>" + data.message + "</p>"
+        }
+
+        if (isStart) {
+            document.querySelector("#start").innerHTML = data.message
+        }
+        if (isStarted) {
+            document.querySelector("#start").innerHTML = data.message
+        }
+
+        if (isPaused) {
+            document.querySelector("#pause").innerHTML = data.message
+        }
     }
 
     notificationSocket.onclose = function (e) {
@@ -613,6 +658,29 @@
     <hr />
     <div id="log" style="overflow-y: scroll; height: 320px"></div>
 </div>
+
+<div
+    id="logs"
+    class="ui-widget-content box shadow-2xl"
+    style="
+        background-color: rgb(59, 58, 58);
+        color: white;
+        border-radius: 10px;
+        border: 2px solid rgb(9, 8, 8);
+        box-shadow: 0 0 10px #ccc;
+        background-color: black;
+        width: 700px;
+        height: 500px;
+        margin: auto;
+        margin-left: 350px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    "
+>
+    <b><h1 class="p-4">Logs</h1></b>
+    <hr />
+    <div id="logging" style="overflow-y: scroll; height: 420px"></div>
+</div>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script>
@@ -620,4 +688,5 @@
         $("#draggable").draggable()
     })
 </script>
+
 {%block logout%} {% endblock%} {% endblock%}

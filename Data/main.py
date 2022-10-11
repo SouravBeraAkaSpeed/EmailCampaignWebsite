@@ -107,6 +107,14 @@ def main(delay_per_email,folder):
     s=[]
     for contact in contacts:
 
+        while True:
+            with open("./isPause.txt", "r") as f:
+                if int(f.read()) == 0:
+                    break
+                else:
+                    print("paused")
+                    continue
+
         with open(f'{folder}/isrunning.txt','r') as f:
             r=f.read()
             if int(r) == 0:
@@ -137,9 +145,11 @@ def main(delay_per_email,folder):
 
 
         try:
-            if len(s)==len(smtps):
-                s=[]
+            
+            s=[]
             while True:
+                if len(s)==len(smtps):
+                    s=[]
                 print("stuck")
                 smtp = random.choice(smtps)
                 if smtp['Email'] in s:
@@ -158,18 +168,19 @@ def main(delay_per_email,folder):
             PassWord = smtp['Password']
             SMTP = smtp['SMTP']
             PORT = smtp['PORT']
+            name=smtp['From']
             num = smtp['No_of_send']
             smtp['No_of_send'] = num+1
             subject = subjects[0]
             Subject = Header(subject['subjects'])
             body = bodys[0]
             Body = body['body']
-            Body_name = body['name']
+            Body_name = body['name'].split("\\")[1]
             msg.set_charset('utf-8')
             msg['Date'] = formatdate(localtime=True)
             msg['Message-ID'] = make_msgid()
             msg['Subject'] = Subject
-            msg['From'] = str(Header(f'<{Email}>'))
+            msg['From'] = str(Header(f' {name}<{Email}>'))
             msg['To'] = contact
             # msg['Cc'] = Email
             # msg['Bcc'] = Email
@@ -204,39 +215,41 @@ def main(delay_per_email,folder):
     #
 
             for file in attachments:
-                if Body_name == file.split('.')[0]:
-                    with open(f"{folder}/attachments/{file}", 'rb') as f:
+                
+                if Body_name == file.split("\\")[1].split('.')[0]:
+                    with open(f"{file}", 'rb') as f:
                         file_data = f.read()
                         file_name = f.name
                     attach = MIMEBase(
-                        'application', 'octate-stream', Name=file)
+                        'application', 'octate-stream', Name=file_name)
                     attach.set_payload(file_data)
                     encoders.encode_base64(attach)
                     attach.add_header('Content-Decomposition',
-                                      'attachment', filename=file)
+                                      'attachment', filename=file.split("\\")[1])
                     msg.attach(attach)
 
             for image in images_jpg:
-
-                with open(f"{folder}/attachments/{image}", 'rb') as f:
-                    file_data = f.read()
-                    file_name = f.name
-                msgImage = MIMEImage(file_data, _subtype="jpg")
-                msgImage.add_header('Content-ID', f'<{image}>')
-                msgImage.add_header('Content-Disposition',
-                                    'attachment', filename=image)
-                msg.attach(msgImage)
+                if Body_name == image.split("\\")[1].split('.')[0]:
+                    
+                    with open(f"{image}", 'rb') as f:
+                        file_data = f.read()
+                        file_name = f.name
+                    msgImage = MIMEImage(file_data, _subtype="jpg")
+                    msgImage.add_header('Content-ID', f'<{image}>')
+                    msgImage.add_header('Content-Disposition',
+                                        'attachment', filename=file_name)
+                    msg.attach(msgImage)
 
             for image in images_png:
-
-                with open(f"{folder}/attachments/{image}", 'rb') as f:
-                    file_data = f.read()
-                    file_name = f.name
-                msgImage = MIMEImage(file_data, _subtype="png")
-                msgImage.add_header('Content-ID', f'<{image}>')
-                msgImage.add_header('Content-Disposition',
-                                    'attachment', filename=image)
-                msg.attach(msgImage)
+                if Body_name == image.split("\\")[1].split('.')[0]:
+                    with open(f"{image}", 'rb') as f:
+                        file_data = f.read()
+                        file_name = f.name
+                    msgImage = MIMEImage(file_data, _subtype="png")
+                    msgImage.add_header('Content-ID', f'<{image}>')
+                    msgImage.add_header('Content-Disposition',
+                                        'attachment', filename=file_name)
+                    msg.attach(msgImage)
 
 
 
@@ -309,7 +322,8 @@ def main(delay_per_email,folder):
                             i+=1
                             event={
                                 'type':'send_message',
-                                'message':f"EMAIL SENDED TO {contact}.(Total Email sent {i})"
+                                'message':f"EMAIL SENDED TO {contact}.(Total Email sent {i})",
+                                'isLog':True
                             }
                 except Exception as e:
                     print(e)
@@ -319,9 +333,11 @@ def main(delay_per_email,folder):
                         print('\n You have problem in '+Email)
                         event={
                                 'type':'send_message',
-                                'message':f"You have problem in  {Email}"
+                                'message':f"You have problem in  {Email} , error: {str(e)}",
+                                'isLog':True
                             }
-
+                async_to_sync(layer.group_send)(
+                    'notification', event)
             else:
 
                 try:
@@ -341,11 +357,15 @@ def main(delay_per_email,folder):
                     # print(1)
                     # smtplib.SMTP._get_socket = _smtplib_get_socket
 
-                    with smtplib.SMTP_SSL(SMTP, PORT) as smtp:
-                        smtp.set_debuglevel(1)
+                    with smtplib.SMTP(SMTP, PORT) as smtp:
+                        # smtp.set_debuglevel(1)
 
+                        smtp.ehlo()
+                        smtp.starttls()
+                        smtp.ehlo()
                         smtp.login(Email, PassWord)
-                        smtp.send_message(msg)
+                        smtp.sendmail(Email, contact, msg.as_string())
+                        # smtp.send_message(msg)
                         smtp.quit()
                         time.sleep(int(delay_per_email))
                         with open(f"{folder}/logs.txt", 'a') as f:
@@ -354,7 +374,8 @@ def main(delay_per_email,folder):
                             i+=1
                             event={
                                 'type':'send_message',
-                                'message':f"EMAIL SENDED TO {contact} .(Total Email sent {i})"
+                                'message':f"EMAIL SENDED TO {contact} .(Total Email sent {i})",
+                                'isLog':True
                             }
                 except Exception as e:
                     print(e)
@@ -366,14 +387,17 @@ def main(delay_per_email,folder):
                         print('\n You have problem in '+Email)
                         event={
                                 'type':'send_message',
-                                'message':f"You have problem in {Email}"
+                                'message':f"You have problem in {Email} , error: {str(e)}",
+                                'isLog':True
                             }
-
+                async_to_sync(layer.group_send)(
+                    'notification', event)
 
 
             async_to_sync(layer.group_send)(
                     'notification', event)
             df_smtp=pd.read_csv(f'{folder}/smtps.csv')
+            time.sleep(5)
             print(3)
             if flag == 0:
                 print(4)
