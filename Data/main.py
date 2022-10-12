@@ -1,7 +1,8 @@
 
 import time
 import os
-import glob
+import socket
+import glob,socks
 import pandas as pd
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -32,7 +33,7 @@ def leftRotatebyOne(arr, n):
 def main(delay_per_email,folder):
 
 
-    with open(f'{folder}/isrunning.txt','w') as f:
+    with open(f'./isrunning.txt','w') as f:
         f.write(str(1))
 
     layer = get_channel_layer()
@@ -115,7 +116,7 @@ def main(delay_per_email,folder):
                     print("paused")
                     continue
 
-        with open(f'{folder}/isrunning.txt','r') as f:
+        with open(f'./isrunning.txt','r') as f:
             r=f.read()
             if int(r) == 0:
                 isrunning=False
@@ -293,7 +294,7 @@ def main(delay_per_email,folder):
                 }
             async_to_sync(layer.group_send)(
                     'notification', event)
-            with open(f'{folder}/isrunning.txt','r') as f:
+            with open(f'./isrunning.txt','r') as f:
                 r=f.read()
                 print(r)
                 if int(r) == 0:
@@ -315,8 +316,8 @@ def main(delay_per_email,folder):
                         smtp.sendmail(Email, contact, msg.as_string())
                         smtp.quit()
                         time.sleep(int(delay_per_email))
-                        with open(f"{folder}/logs.txt", 'a') as f:
-                            f.write('\n EMAIL SENDED TO ' +
+                        with open(f"./logs.txt", 'a') as f:
+                            f.write('<br/> \n EMAIL SENDED TO ' +
                                     contact)
                             print('\n EMAIL SENDED TO '+contact)
                             i+=1
@@ -328,8 +329,8 @@ def main(delay_per_email,folder):
                 except Exception as e:
                     print(e)
                     flag = 1
-                    with open(f"{folder}/logs.txt", 'a') as f:
-                        f.write('\n You have problem in '+Email)
+                    with open(f"./logs.txt", 'a') as f:
+                        f.write('<br/> \n You have problem in '+Email)
                         print('\n You have problem in '+Email)
                         event={
                                 'type':'send_message',
@@ -348,14 +349,15 @@ def main(delay_per_email,folder):
                     #     socks.PROXY_TYPE_HTTP, "133.18.172.217", 8080)
                     # # socket.socket = socks.socksocket
                     # # print(requests.get('http://httpbin.org/ip').text)
-                    # socks.set_default_proxy(socks.HTTP, addr='geo.iproyal.com',
+                    # socks.set_default_proxy(socks.SOCKS5, addr='geo.iproyal.com',
                     #                         port=8080, rdns=True, username='prht2017', password='proxy2022')
                     # socket.socket = socks.socksocket
                     # sock = socket.socket()
 
                     # socks.wrapmodule(smtplib)
+                    # ,proxy_addr="proxy.packetstream.io",proxy_port=3111,proxy_rdns=True,proxy_username="kuchbhientertainment",proxy_password="bhkXQOTQgJmyygXW"
                     # print(1)
-                    # smtplib.SMTP._get_socket = _smtplib_get_socket
+                    # smtplib.SMTP._get_socket = socket.create_connection((SMTP,PORT))
 
                     with smtplib.SMTP(SMTP, PORT) as smtp:
                         # smtp.set_debuglevel(1)
@@ -368,8 +370,8 @@ def main(delay_per_email,folder):
                         # smtp.send_message(msg)
                         smtp.quit()
                         time.sleep(int(delay_per_email))
-                        with open(f"{folder}/logs.txt", 'a') as f:
-                            f.write('\n EMAIL SENDED TO '+contact)
+                        with open(f"./logs.txt", 'a') as f:
+                            f.write('<br/> \n EMAIL SENDED TO '+contact)
                             print('\n EMAIL SENDED TO '+contact)
                             i+=1
                             event={
@@ -382,8 +384,8 @@ def main(delay_per_email,folder):
                     flag = 1
                     with open(f"{folder}/Effected_Smtps.txt", "a") as f:
                         f.write(str(Email)+"\n")
-                    with open(f"{folder}/logs.txt", 'a') as f:
-                        f.write('\n You have problem in '+Email)
+                    with open(f"./logs.txt", 'a') as f:
+                        f.write('<br/> \n You have problem in '+Email)
                         print('\n You have problem in '+Email)
                         event={
                                 'type':'send_message',
@@ -437,6 +439,8 @@ def main(delay_per_email,folder):
 
 
     print('\n ALL EMAILS ARE SENDED! ')
+    with open(f'./isrunning.txt','w') as f:
+        f.write(str(0))
     event={
             'type':'send_message',
             'message':f"ALL EMAILS ARE SENDED!"

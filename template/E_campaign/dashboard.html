@@ -607,7 +607,7 @@
 
         if (isLog) {
             document.querySelector("#logging").innerHTML +=
-                "<p class='p-1'>" + data.message + "</p>"
+                "<p class='p-1'>" + data.message.replace("\n", "</br>") + "</p>"
         }
 
         if (isStart) {
@@ -615,6 +615,7 @@
         }
         if (isStarted) {
             document.querySelector("#start").innerHTML = data.message
+            $("#pause").css("visibility", "visible")
         }
 
         if (isPaused) {
@@ -681,12 +682,25 @@
     <hr />
     <div id="logging" style="overflow-y: scroll; height: 420px"></div>
 </div>
+<div class="flex items-center" style="margin-left: 47%">
+    <button
+        onclick="load_log(6);"
+        id="load_log"
+        class="mx-2 mt-2 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+    >
+        Load Logs
+    </button>
+</div>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script>
     $(function () {
         $("#draggable").draggable()
     })
+
+    function load_log(pk) {
+        $.get("dashboard/" + pk, function (data) {})
+    }
 </script>
 
 {%block logout%} {% endblock%} {% endblock%}

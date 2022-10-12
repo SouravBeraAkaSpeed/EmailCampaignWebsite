@@ -81,6 +81,8 @@ def setting(request):
 
 def dashboard(request,pk=None):
 
+    
+    
     if request.user.is_authenticated:
         layer = get_channel_layer()
         isDataUploaded=False
@@ -111,6 +113,16 @@ def dashboard(request,pk=None):
             no_of_subjects=0
             no_of_proxy=0
         
+        with open("./isrunning.txt","r") as f:
+            r=f.read()
+            if int(r) == 1:
+                event={
+                        'type':'send_message',
+                        'message':f"STOP",
+                        'isStarted':True
+                    }
+                async_to_sync(layer.group_send)(
+                            'notification', event)
 
         if pk==1:
             
@@ -164,12 +176,8 @@ def dashboard(request,pk=None):
         if pk==3:
             # Stop campaign
 
-            folders=[]
-            for f in os.listdir():
-                if "instance"  in f:
-                    folders.append(f)
-            for folder in folders:
-                with open(f'{folder}/isrunning.txt','w') as f:
+            
+            with open(f'./isrunning.txt','w') as f:
                     f.write(str(0))
             event={
                         'type':'send_message',
@@ -202,7 +210,17 @@ def dashboard(request,pk=None):
             async_to_sync(layer.group_send)(
                         'notification', event)
 
-        
+        if pk==6:
+            with open("./logs.txt","r") as f:
+                logs=str(f.read())
+            event={
+                'type':'send_message',
+                'message':f"{logs}",
+                'isLog':True
+            }
+            async_to_sync(layer.group_send)(
+                            'notification', event)
+            
         context={
             'no_of_smtp':no_of_smtp,
             'contacts':contacts,
