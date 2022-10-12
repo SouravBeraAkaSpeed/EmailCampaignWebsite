@@ -598,6 +598,7 @@
         let isStarted = data.isStarted || false
         let isPaused = data.isPaused || false
         let isLog = data.isLog || false
+        let isStopped = data.isStopped || false
 
         // Do some stuff...
         if (!isStart && !isStarted && !isPaused) {
@@ -612,6 +613,11 @@
 
         if (isStart) {
             document.querySelector("#start").innerHTML = data.message
+        }
+
+        if (isStopped) {
+            document.querySelector("#start").innerHTML = data.message
+            $("#pause").css("visibility", "hidden")
         }
         if (isStarted) {
             document.querySelector("#start").innerHTML = data.message

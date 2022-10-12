@@ -441,9 +441,17 @@ def main(delay_per_email,folder):
     print('\n ALL EMAILS ARE SENDED! ')
     with open(f'./isrunning.txt','w') as f:
         f.write(str(0))
+
     event={
             'type':'send_message',
             'message':f"ALL EMAILS ARE SENDED!"
         }
     async_to_sync(layer.group_send)(
                     'notification', event)
+    event={
+            'type':'send_message',
+            'message':f"START CAMPAIGN",
+            'isStopped':True
+        }
+    async_to_sync(layer.group_send)(
+                'notification', event)
