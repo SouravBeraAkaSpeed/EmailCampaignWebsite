@@ -173,7 +173,13 @@ def main(delay_per_email,folder):
             num = smtp['No_of_send']
             smtp['No_of_send'] = num+1
             subject = subjects[0]
-            Subject = Header(subject['subjects'])
+            Subject = subject['subjects']
+            for file in csv_files:
+
+                if  "smtps" not in file:
+                    Subject = Subject.replace(f"[{file.split('.')[0].replace('/','')}]", str(globals()[f"{file.split('.')[0].replace('/','')}"][0][f"{file.split('.')[0].replace('/','')}"]))
+
+            Subject = Header(Subject)
             body = bodys[0]
             Body = body['body']
             Body_name = body['name'].split("\\")[1]
