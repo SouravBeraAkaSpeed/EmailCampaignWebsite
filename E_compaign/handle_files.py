@@ -74,7 +74,15 @@ def handle_phone_input(p):
     with open("Data/phone_no.csv", "w") as f:
         f.write(str('phone_no')+"\n")
     df = pd.read_csv('Data/phone_no.csv')
-    df.at[0, 'phone_no'] = p
+    if "," in str(p):
+        numbers=str(p).split(",")
+        length=len(numbers)
+        for i in range(length):
+            df.at[i, 'phone_no'] = numbers[i]
+    else:
+        df.at[0, 'phone_no'] = p
+
+    
     df.to_csv('Data/phone_no.csv', index=False)
 
 

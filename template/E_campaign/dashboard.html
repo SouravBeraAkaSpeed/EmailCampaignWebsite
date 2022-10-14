@@ -697,6 +697,41 @@
         Load Logs
     </button>
 </div>
+
+<div
+    id="receipts"
+    class="ui-widget-content box shadow-2xl"
+    style="
+        background-color: rgb(59, 58, 58);
+        color: white;
+        border-radius: 10px;
+        border: 2px solid rgb(9, 8, 8);
+        box-shadow: 0 0 10px #ccc;
+        background-color: black;
+        width: 700px;
+        height: 500px;
+        margin: auto;
+        margin-left: 350px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    "
+>
+    <b><h1 class="p-4">Receipts</h1></b>
+    <hr />
+    <div id="receipt" style="overflow-y: scroll; height: 420px"></div>
+</div>
+<div class="flex items-center" style="margin-left: 47%; margin-bottom: 50px">
+    <button
+        onclick="load_receipt();"
+        id="load_receipt"
+        class="mx-2 mt-2 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+    >
+        Load receipts
+    </button>
+</div>
+<span style="margin-left: 10%; margin-bottom: 50px"
+    >@developer - Sourav Bera Aka Speed</span
+>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script>
@@ -706,6 +741,18 @@
 
     function load_log(pk) {
         $.get("dashboard/" + pk, function (data) {})
+    }
+
+    function load_receipt() {
+        $.get(
+            "https://readreceiptapi.herokuapp.com/upload/get/getreceipts",
+            function (data) {
+                for (i = 0; i < data.length; i++) {
+                    document.querySelector("#receipt").innerHTML +=
+                        "<p class='p-1'>" + data[i].email + "</p>"
+                }
+            }
+        )
     }
 </script>
 

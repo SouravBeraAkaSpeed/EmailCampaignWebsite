@@ -87,19 +87,31 @@ def dashboard(request,pk=None):
         layer = get_channel_layer()
         isDataUploaded=False
         try:
+            try:
+                df=pd.read_csv('Data/smtps.csv')
+                no_of_smtp=df.shape[0]
+                print(no_of_smtp)
+            except Exception as e:
+                no_of_smtp=0
+            try:
+                df=pd.read_excel('Data/Data.xlsx')
+                contacts=df.shape[0]
+            except Exception as e:
+                contacts=0
+            try:
             
-            df=pd.read_csv('Data/smtps.csv')
-            no_of_smtp=df.shape[0]
-            print(no_of_smtp)
-            df=pd.read_excel('Data/Data.xlsx')
-            contacts=df.shape[0]
-            contents=len(os.listdir("Data/content/"))
+                contents=len(os.listdir("Data/content/"))
+            except Exception as e:
+                contents=0
             with open('Data/instance.txt','r') as f:
                 no_of_instance=str(f.read())
             df=pd.read_csv('Data/phone_no.csv')
             no_of_phone_numbers=df.shape[0]
-            df=pd.read_csv('Data/subjects.csv')
-            no_of_subjects=df.shape[0]
+            try:
+                df=pd.read_csv('Data/subjects.csv')
+                no_of_subjects=df.shape[0]
+            except Exception as e:
+                no_of_subjects=0
             with open('Data/Proxy_list.txt','r') as f:
                 no_of_proxy=str(len(f.read().split("\n")))
             isDataUploaded=True
