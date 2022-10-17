@@ -119,7 +119,12 @@ def dashboard(request,pk=None):
             except Exception as e:
                 no_of_subjects=0
             with open('Data/Proxy_list.txt','r') as f:
-                no_of_proxy=str(len(f.read().split("\n")))
+                r=f.read()
+                if r=="":
+                    no_of_proxy=0
+                else:
+                    no_of_proxy=str(len(r.split("\n")))
+                print(no_of_proxy)
             isDataUploaded=True
         except Exception as e:
             
