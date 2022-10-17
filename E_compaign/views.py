@@ -25,10 +25,13 @@ def Home(request):
         return render(request, 'E_campaign/base.html',context)
 
 
-def setting(request):
+def setting(request,pk=None):
 
     if request.user.is_authenticated:
-        
+
+
+        if pk==1:
+            delete_previous_data()
     
 
         if request.method =='POST':
@@ -105,8 +108,11 @@ def dashboard(request,pk=None):
                 contents=0
             with open('Data/instance.txt','r') as f:
                 no_of_instance=str(f.read())
-            df=pd.read_csv('Data/phone_no.csv')
-            no_of_phone_numbers=df.shape[0]
+            try:
+                df=pd.read_csv('Data/phone_no.csv')
+                no_of_phone_numbers=df.shape[0]
+            except Exception as e:
+                no_of_phone_numbers=0
             try:
                 df=pd.read_csv('Data/subjects.csv')
                 no_of_subjects=df.shape[0]

@@ -16,9 +16,9 @@
         <p style="font-size: 25px">Important Information</p>
         <hr />
         <br />
-        <p style="font-size: 13px" class="pl-4 text-sm font-normal">
+        <p style="font-size: 12px" class="pl-4 text-sm font-normal">
             >> Formate of smtp file(smtps.csv):<br />
-            Email,Password,SMTP,PORT,Limit,No_of_send<br /><br />
+            Email,Password,SMTP,PORT,From,Limit,No_of_send<br /><br />
         </p>
         <p style="font-size: 13px" class="pl-4 text-sm font-normal">
             >> column name of contacts in data file must be contacts.<br /><br />
@@ -31,7 +31,7 @@
 </div>
 
 <div
-    id="toast-success"
+    id="toast_success"
     style="position: fixed; top: 30px; right: 30px; visibility: hidden"
     class="flex items-center p-4 mb-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
     role="alert"
@@ -60,8 +60,67 @@
     <button
         type="button"
         id="hide_success"
+        onclick="hide_success();"
         class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-        data-dismiss-target="#toast-success"
+    >
+        <span class="sr-only">Close</span>
+        <svg
+            aria-hidden="true"
+            class="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+            ></path>
+        </svg>
+    </button>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        function hide_success(pk) {
+            $("#toast_success").css("visibility", "hidden")
+        }
+    </script>
+    <!-- function hide_success() { $("#toast_success").css("visibility", "hidden") }
+    // $("#hide_success").on("click", function () { -->
+</div>
+
+<div
+    id="toast-delete"
+    style="position: fixed; top: 30px; left: 30px; visibility: hidden"
+    class="flex items-center p-4 mb-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+    role="alert"
+>
+    <div
+        class="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200"
+    >
+        <svg
+            aria-hidden="true"
+            class="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clip-rule="evenodd"
+            ></path>
+        </svg>
+        <span class="sr-only">Check icon</span>
+    </div>
+    <div id="notification" class="ml-3 text-sm font-normal">
+        Deleted Successfully!
+    </div>
+    <button
+        type="button"
+        id="toast_delete"
+        class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+        data-dismiss-target="#toast-delete"
         aria-label="Close"
     >
         <span class="sr-only">Close</span>
@@ -81,12 +140,12 @@
     </button>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
-        $("#hide_success").on("click", function () {
-            $("#toast-success").hide()
+        $("#toast_delete").on("click", function () {
+            console.log("test")
+            $("#toast-delete").css("visibility", "hidden")
         })
     </script>
 </div>
-
 <section class="text-gray-700 body-font relative">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %} {{ form.non_field_errors }} {{ form.non_form_errors }}
@@ -263,7 +322,7 @@
                         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
                         <script>
                             function load(pk) {
-                                $("#toast-success").css("visibility", "visible")
+                                $("#toast_success").css("visibility", "visible")
                             }
                         </script>
                     </div>
@@ -271,6 +330,25 @@
             </div>
         </div>
     </form>
+    <center>
+        <p style="font-size: 40px; margin-bottom: 10px">
+            <b>Delete All Previous uploads</b>
+        </p>
+    </center>
+    <button
+        onclick="delete_data(1);"
+        class="flex mx-auto mb-8 text-white bg-indigo-500 border-0 py-2 px-10 font-medium focus:outline-none hover:bg-indigo-600 rounded text-lg"
+    >
+        Delete All Data
+    </button>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        function delete_data(pk) {
+            $.get("settings/" + pk, function (data) {
+                $("#toast-delete").css("visibility", "visible")
+            })
+        }
+    </script>
 </section>
 
 {%block logout%} {% endblock%} {% endblock%}

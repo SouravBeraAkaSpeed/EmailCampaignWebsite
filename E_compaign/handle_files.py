@@ -14,6 +14,8 @@ def delete_previous_data():
     filelist = glob.glob("Data/*.csv")
     for f in filelist:
         os.remove(f"{f}")
+    df=pd.DataFrame({"contacts":[]})
+    df.to_excel(f'Data/Data.xlsx', index=False)
 
 
 no_of_instance = 1
