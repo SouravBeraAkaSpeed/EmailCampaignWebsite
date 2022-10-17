@@ -243,6 +243,16 @@ def dashboard(request,pk=None):
             }
             async_to_sync(layer.group_send)(
                             'notification', event)
+            data={
+                'no_of_smtp':no_of_smtp,
+                'contacts':contacts,
+                'contents':contents,
+                'no_of_instance':no_of_instance,
+                'no_of_phone_numbers':no_of_phone_numbers,
+                'no_of_subjects':no_of_subjects,
+                'no_of_proxy':no_of_proxy
+            }
+            return JsonResponse(data) 
             
         context={
             'no_of_smtp':no_of_smtp,

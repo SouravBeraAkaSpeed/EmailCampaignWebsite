@@ -744,6 +744,8 @@
     }
 
     function load_receipt() {
+        document.querySelector("#receipt").innerHTML +=
+            "<p class='p-1'> Loading... </p>"
         $.get(
             "https://readreceiptapi.herokuapp.com/upload/get/getreceipts",
             function (data) {
