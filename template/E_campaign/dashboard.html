@@ -740,7 +740,11 @@
     })
 
     function load_log(pk) {
-        $.get("dashboard/" + pk, function (data) {})
+        $.get("dashboard/" + pk, function (data) {
+            message = data["message"]
+            document.querySelector("#logging").innerHTML +=
+                "<p class='p-1'>" + message + " </p>"
+        })
     }
 
     function load_receipt() {
