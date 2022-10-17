@@ -16,7 +16,10 @@ def delete_previous_data():
         os.remove(f"{f}")
     df=pd.DataFrame({"contacts":[]})
     df.to_excel(f'Data/Data.xlsx', index=False)
-
+    with open("Data/Proxy_list.txt","w") as f:
+        f.write(str(""))
+    with open("Data/instance.txt","w") as f:
+        f.write(str("0"))
 
 no_of_instance = 1
 
