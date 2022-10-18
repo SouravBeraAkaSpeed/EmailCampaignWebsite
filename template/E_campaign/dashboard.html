@@ -688,13 +688,27 @@
     <hr />
     <div id="logging" style="overflow-y: scroll; height: 420px"></div>
 </div>
-<div class="flex items-center" style="margin-left: 47%">
+<div class="flex items-center" style="margin-left: 32%">
     <button
         onclick="load_log(6);"
         id="load_log"
-        class="mx-2 mt-2 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+        class="mx-2 mt-2 text-white bg-indigo-500 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded text-lg"
     >
         Load Logs
+    </button>
+    <button
+        class="mx-2 mt-2 text-white bg-indigo-500 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+    >
+        <a href="{% url 'download_file' filename='logs.txt' %}"
+            >Download Logs</a
+        >
+    </button>
+    <button
+        class="mx-2 mt-2 text-white bg-indigo-500 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+    >
+        <a href="{% url 'download_file' filename='faulty_smtps.txt' %}"
+            >Download Faulty smtps</a
+        >
     </button>
 </div>
 

@@ -2,7 +2,8 @@
 import time
 import os
 import socket
-import glob,socks
+import glob
+import socks
 import pandas as pd
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -11,7 +12,8 @@ from email.mime.image import MIMEImage
 from email import encoders
 from email.header import Header
 from email.utils import formatdate, make_msgid
-import random,string
+import random
+import string
 import smtplib
 from asgiref.sync import async_to_sync
 from .Html_to_Pdf_convertor import Convert
@@ -20,9 +22,12 @@ import traceback
 from datetime import date
 
 now = time.time()
+
+
 def leftRotate(arr, d):
     for i in range(d):
         leftRotatebyOne(arr, len(arr))
+
 
 def leftRotatebyOne(arr, n):
     temp = arr[0]
@@ -30,10 +35,10 @@ def leftRotatebyOne(arr, n):
         arr[i] = arr[i + 1]
         arr[n-1] = temp
 
-def main(delay_per_email,folder):
 
+def main(delay_per_email, folder):
 
-    with open(f'./isrunning.txt','w') as f:
+    with open(f'./isrunning.txt', 'w') as f:
         f.write(str(1))
 
     layer = get_channel_layer()
@@ -45,15 +50,11 @@ def main(delay_per_email,folder):
 
     # os.chdir('Manish_project')
 
-
-
     with open(f'{folder}/Body_template.html', 'r') as f:
         msg_body = f.read()
 
-
     # print("\n <----- Please keep this in mind this software will work only when your less secure apps setting" +
     #       "is enabled,\n if it is not enabled you can enable it here: https://myaccount.google.com/lesssecureapps ----->")
-
 
     # os.chdir(f'{folder}/attachments')
     attachments = glob.glob(f"{folder}/attachments/*.pdf")
@@ -75,37 +76,30 @@ def main(delay_per_email,folder):
                 "name": body.split(".")[0],
             })
 
-
     # os.chdir('../')
 
-
-    csvs= glob.glob(f'{folder}/*.csv')
-    csv_files=[]
+    csvs = glob.glob(f'{folder}/*.csv')
+    csv_files = []
     for csv in csvs:
-        csv_files.append(csv.replace(f"{folder}","").replace("\\",""))
-
-
+        csv_files.append(csv.replace(f"{folder}", "").replace("\\", ""))
 
     for file in csv_files:
-        globals()[f"{file.split('.')[0].replace('/','')}"]=[]
+        globals()[f"{file.split('.')[0].replace('/','')}"] = []
 
-        df=pd.read_csv(f"{folder}/{file}")
+        df = pd.read_csv(f"{folder}/{file}")
         for index, column in df.iterrows():
-            cols= df.columns
-            mydict = {f'{col}':column[col] for col in cols}
+            cols = df.columns
+            mydict = {f'{col}': column[col] for col in cols}
             globals()[f"{file.split('.')[0].replace('/','')}"].append(mydict)
 
-
-
-
-    UseHtmlConvertor='n'
+    UseHtmlConvertor = 'n'
     if UseHtmlConvertor == 'y':
 
         Output_pdf_name = input(
             "Enter the name of the file that will be coverted into pdf: ")
 
-    i=0
-    s=[]
+    i = 0
+    s = []
     for contact in contacts:
 
         while True:
@@ -116,22 +110,19 @@ def main(delay_per_email,folder):
                     print("paused")
                     continue
 
-        with open(f'./isrunning.txt','r') as f:
-            r=f.read()
+        with open(f'./isrunning.txt', 'r') as f:
+            r = f.read()
             if int(r) == 0:
-                isrunning=False
+                isrunning = False
             else:
-                isrunning=True
+                isrunning = True
 
         if not isrunning:
 
             break
 
-        contact=contact['contacts']
-        smtp_index=0
-
-
-
+        contact = contact['contacts']
+        smtp_index = 0
 
         limit_reached = False
         for smtp in smtps:
@@ -144,13 +135,12 @@ def main(delay_per_email,folder):
         if limit_reached == True:
             print("Limit of Email Sending is Reached.")
 
-
         try:
-            
-            s=[]
+
+            s = []
             while True:
-                if len(s)==len(smtps):
-                    s=[]
+                if len(s) == len(smtps):
+                    s = []
                 print("stuck")
                 smtp = random.choice(smtps)
                 if smtp['Email'] in s:
@@ -159,25 +149,22 @@ def main(delay_per_email,folder):
                     break
             s.append(smtp['Email'])
 
-
             msg = MIMEMultipart()
-
-
-
 
             Email = smtp['Email']
             PassWord = smtp['Password']
             SMTP = smtp['SMTP']
             PORT = smtp['PORT']
-            name=smtp['From']
+            name = smtp['From']
             num = smtp['No_of_send']
             smtp['No_of_send'] = num+1
             subject = subjects[0]
             Subject = subject['subjects']
             for file in csv_files:
 
-                if  "smtps" not in file:
-                    Subject = Subject.replace(f"[{file.split('.')[0].replace('/','')}]", str(globals()[f"{file.split('.')[0].replace('/','')}"][0][f"{file.split('.')[0].replace('/','')}"]))
+                if "smtps" not in file:
+                    Subject = Subject.replace(f"[{file.split('.')[0].replace('/','')}]", str(globals()[
+                                              f"{file.split('.')[0].replace('/','')}"][0][f"{file.split('.')[0].replace('/','')}"]))
 
             Subject = Header(Subject)
             body = bodys[0]
@@ -194,35 +181,37 @@ def main(delay_per_email,folder):
             msg['In-Reply-To'] = contact
             # msg['References'] = contact
 
-            randomnumber=random.randint(100000000000,999999999999)
-            alphanumeric=''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(12))
-            code=random.randint(1000,9999)
-            date1=date.today().strftime(" %d %B %Y")
-            date2=date.today().strftime(" %A %d %B %Y")
+            randomnumber = random.randint(100000000000, 999999999999)
+            alphanumeric = ''.join(random.choice(
+                string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(12))
+            code = random.randint(1000, 9999)
+            date1 = date.today().strftime(" %d %B %Y")
+            date2 = date.today().strftime(" %A %d %B %Y")
             html = msg_body.replace("[body]", Body)
 
             for file in csv_files:
 
-                if  "smtps" not in file:
-                    html = html.replace(f"[{file.split('.')[0].replace('/','')}]", str(globals()[f"{file.split('.')[0].replace('/','')}"][0][f"{file.split('.')[0].replace('/','')}"]))
+                if "smtps" not in file:
+                    html = html.replace(f"[{file.split('.')[0].replace('/','')}]", str(globals()[
+                                        f"{file.split('.')[0].replace('/','')}"][0][f"{file.split('.')[0].replace('/','')}"]))
 
-            html=html.replace("[randomnumber]",str(randomnumber))
-            html=html.replace("[alphanumeric]",str(alphanumeric))
-            html=html.replace("[code]",str(code))
-            html=html.replace("[date1]",str(date1))
-            html=html.replace("[date2]",str(date2))
+            html = html.replace("[randomnumber]", str(randomnumber))
+            html = html.replace("[alphanumeric]", str(alphanumeric))
+            html = html.replace("[code]", str(code))
+            html = html.replace("[date1]", str(date1))
+            html = html.replace("[date2]", str(date2))
             part = MIMEText(html, 'html')
             msg.attach(part)
-            event={
-                    'type':'send_message',
-                    'message':f"Processing Data..."
-                }
+            event = {
+                'type': 'send_message',
+                'message': f"Processing Data..."
+            }
             async_to_sync(layer.group_send)(
-                    'notification', event)
+                'notification', event)
     #
 
             for file in attachments:
-                
+
                 if Body_name == file.split("\\")[1].split('.')[0]:
                     with open(f"{file}", 'rb') as f:
                         file_data = f.read()
@@ -237,7 +226,7 @@ def main(delay_per_email,folder):
 
             for image in images_jpg:
                 if Body_name == image.split("\\")[1].split('.')[0]:
-                    
+
                     with open(f"{image}", 'rb') as f:
                         file_data = f.read()
                         file_name = f.name
@@ -257,8 +246,6 @@ def main(delay_per_email,folder):
                     msgImage.add_header('Content-Disposition',
                                         'attachment', filename=file_name)
                     msg.attach(msgImage)
-
-
 
             if UseHtmlConvertor == 'y':
 
@@ -286,27 +273,28 @@ def main(delay_per_email,folder):
                     os.remove(f'{Output_pdf_name}.pdf')
 
                 except Exception as e:
-                    print("Error while converting, error:"+str(traceback.format_exc()))
-                    event={
-                            'type':'send_message',
-                            'message':f"Error while converting, error: {str(traceback.format_exc())}"
-                        }
+                    print("Error while converting, error:" +
+                          str(traceback.format_exc()))
+                    event = {
+                        'type': 'send_message',
+                        'message': f"Error while converting, error: {str(traceback.format_exc())}"
+                    }
 
             flag = 0
             print("Sending...")
-            event={
-                    'type':'send_message',
-                    'message':f"Sending..."
-                }
+            event = {
+                'type': 'send_message',
+                'message': f"Sending..."
+            }
             async_to_sync(layer.group_send)(
-                    'notification', event)
-            with open(f'./isrunning.txt','r') as f:
-                r=f.read()
+                'notification', event)
+            with open(f'./isrunning.txt', 'r') as f:
+                r = f.read()
                 print(r)
                 if int(r) == 0:
-                    isrunning=False
+                    isrunning = False
                 else:
-                    isrunning=True
+                    isrunning = True
 
             if not isrunning:
 
@@ -326,23 +314,25 @@ def main(delay_per_email,folder):
                             f.write('<br/> \n EMAIL SENDED TO ' +
                                     contact)
                             print('\n EMAIL SENDED TO '+contact)
-                            i+=1
-                            event={
-                                'type':'send_message',
-                                'message':f"EMAIL SENDED TO {contact}.(Total Email sent {i})",
-                                'isLog':True
+                            i += 1
+                            event = {
+                                'type': 'send_message',
+                                'message': f"EMAIL SENDED TO {contact}.(Total Email sent {i})",
+                                'isLog': True
                             }
                 except Exception as e:
                     print(e)
                     flag = 1
+                    with open(f"./faulty_smtps.txt", 'a') as f:
+                        f.write('<br/> \n '+Email)
                     with open(f"./logs.txt", 'a') as f:
                         f.write('<br/> \n You have problem in '+Email)
                         print('\n You have problem in '+Email)
-                        event={
-                                'type':'send_message',
-                                'message':f"You have problem in  {Email} , error: {str(e)}",
-                                'isLog':True
-                            }
+                        event = {
+                            'type': 'send_message',
+                            'message': f"You have problem in  {Email} , error: {str(e)}",
+                            'isLog': True
+                        }
                 async_to_sync(layer.group_send)(
                     'notification', event)
             else:
@@ -379,32 +369,32 @@ def main(delay_per_email,folder):
                         with open(f"./logs.txt", 'a') as f:
                             f.write('<br/> \n EMAIL SENDED TO '+contact)
                             print('\n EMAIL SENDED TO '+contact)
-                            i+=1
-                            event={
-                                'type':'send_message',
-                                'message':f"EMAIL SENDED TO {contact} .(Total Email sent {i})",
-                                'isLog':True
+                            i += 1
+                            event = {
+                                'type': 'send_message',
+                                'message': f"EMAIL SENDED TO {contact} .(Total Email sent {i})",
+                                'isLog': True
                             }
                 except Exception as e:
                     print(e)
                     flag = 1
-                    with open(f"{folder}/Effected_Smtps.txt", "a") as f:
-                        f.write(str(Email)+"\n")
+                    with open(f"./faulty_smtps.txt", 'a') as f:
+                        f.write('<br/> \n '+Email)
+
                     with open(f"./logs.txt", 'a') as f:
                         f.write('<br/> \n You have problem in '+Email)
                         print('\n You have problem in '+Email)
-                        event={
-                                'type':'send_message',
-                                'message':f"You have problem in {Email} , error: {str(e)}",
-                                'isLog':True
-                            }
+                        event = {
+                            'type': 'send_message',
+                            'message': f"You have problem in {Email} , error: {str(e)}",
+                            'isLog': True
+                        }
                 async_to_sync(layer.group_send)(
                     'notification', event)
 
-
             async_to_sync(layer.group_send)(
-                    'notification', event)
-            df_smtp=pd.read_csv(f'{folder}/smtps.csv')
+                'notification', event)
+            df_smtp = pd.read_csv(f'{folder}/smtps.csv')
             time.sleep(5)
             print(3)
             if flag == 0:
@@ -418,46 +408,41 @@ def main(delay_per_email,folder):
 
         except Exception:
             print("error:"+str(traceback.format_exc()))
-            event={
-                    'type':'send_message',
-                    'message':f"error: {str(traceback.format_exc())}"
-                }
+            event = {
+                'type': 'send_message',
+                'message': f"error: {str(traceback.format_exc())}"
+            }
             async_to_sync(layer.group_send)(
-                    'notification', event)
-
+                'notification', event)
 
         leftRotate(phone_no, 1)
         leftRotate(subjects, 1)
         leftRotate(bodys, 1)
         for file in csv_files:
 
-                if  "smtps" not in file and "contacts" not in file:
-                    leftRotate(globals()[f"{file.split('.')[0].replace('/','')}"], 1)
-
-
+            if "smtps" not in file and "contacts" not in file:
+                leftRotate(
+                    globals()[f"{file.split('.')[0].replace('/','')}"], 1)
 
         if smtp_index == len(smtps)-1:
             smtp_index = 0
         else:
             smtp_index += 1
 
-
-
-
     print('\n ALL EMAILS ARE SENDED! ')
-    with open(f'./isrunning.txt','w') as f:
+    with open(f'./isrunning.txt', 'w') as f:
         f.write(str(0))
 
-    event={
-            'type':'send_message',
-            'message':f"ALL EMAILS ARE SENDED!"
-        }
+    event = {
+        'type': 'send_message',
+        'message': f"ALL EMAILS ARE SENDED!"
+    }
     async_to_sync(layer.group_send)(
-                    'notification', event)
-    event={
-            'type':'send_message',
-            'message':f"START CAMPAIGN",
-            'isStopped':True
-        }
+        'notification', event)
+    event = {
+        'type': 'send_message',
+        'message': f"START CAMPAIGN",
+        'isStopped': True
+    }
     async_to_sync(layer.group_send)(
-                'notification', event)
+        'notification', event)
