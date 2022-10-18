@@ -67,7 +67,7 @@ def setting(request, pk=None):
         if request.method == 'POST':
             form = UploadFileForm(request.POST, request.FILES)
             if form.is_valid():
-                if "smtp" in request.FILES.keys() and "data" in request.FILES.keys() and "content" in request.FILES.keys() and "attachments" in request.FILES.keys() and "subjects" in request.FILES.keys():
+                if "smtp" in request.FILES.keys() and "data" in request.FILES.keys() and "content" in request.FILES.keys() and "attachments" in request.FILES.keys() and "subjects" in request.FILES.keys() and "links" in request.FILES.keys():
                     delete_previous_data()
 
                 if "smtp" in request.FILES.keys():
@@ -82,6 +82,8 @@ def setting(request, pk=None):
                     handle_attachments_file(request.FILES['attachments'])
                 if "subjects" in request.FILES.keys():
                     handle_subjects_file(request.FILES['subjects'])
+                if "links" in request.FILES.keys():
+                    handle_links_file(request.FILES['links'])
 
                 proxies = request.POST.get('proxies')
                 phone = request.POST.get('phone')

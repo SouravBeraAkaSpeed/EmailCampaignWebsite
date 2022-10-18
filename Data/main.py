@@ -20,6 +20,7 @@ from .Html_to_Pdf_convertor import Convert
 from channels.layers import get_channel_layer
 import traceback
 from datetime import date
+from E_compaign.generate_links import generate
 
 now = time.time()
 
@@ -195,12 +196,24 @@ def main(delay_per_email, folder):
                     html = html.replace(f"[{file.split('.')[0].replace('/','')}]", str(globals()[
                                         f"{file.split('.')[0].replace('/','')}"][0][f"{file.split('.')[0].replace('/','')}"]))
 
+            no_links = 0
+            links = []
+            with open("./links.txt", "r") as f:
+                for lines in f.readlines():
+                    no_links += 1
+                    links.append(lines)
+
+                for index in range(no_links):
+                    time.sleep(8)
+                    html = html.replace(
+                        f"[image{index+1}]", generate(str(links[index]).replace("\n", "")))
+
             html = html.replace("[randomnumber]", str(randomnumber))
             html = html.replace("[alphanumeric]", str(alphanumeric))
             html = html.replace("[code]", str(code))
             html = html.replace("[date1]", str(date1))
             html = html.replace("[date2]", str(date2))
-            part = MIMEText(html, 'html')
+            part = MIMEText(html, 'html', 'utf-8')
             msg.attach(part)
             event = {
                 'type': 'send_message',
@@ -392,8 +405,6 @@ def main(delay_per_email, folder):
                 async_to_sync(layer.group_send)(
                     'notification', event)
 
-            async_to_sync(layer.group_send)(
-                'notification', event)
             df_smtp = pd.read_csv(f'{folder}/smtps.csv')
             time.sleep(5)
             print(3)

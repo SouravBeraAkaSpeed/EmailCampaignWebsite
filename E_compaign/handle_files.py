@@ -14,14 +14,23 @@ def delete_previous_data():
     filelist = glob.glob("Data/*.csv")
     for f in filelist:
         os.remove(f"{f}")
-    df=pd.DataFrame({"contacts":[]})
+    df = pd.DataFrame({"contacts": []})
     df.to_excel(f'Data/Data.xlsx', index=False)
-    with open("Data/Proxy_list.txt","w") as f:
+    with open("Data/Proxy_list.txt", "w") as f:
         f.write(str(""))
-    with open("Data/instance.txt","w") as f:
+    with open("Data/instance.txt", "w") as f:
         f.write(str("0"))
+    with open("./links.txt", "w") as f:
+        f.write(str(""))
+
 
 no_of_instance = 1
+
+
+def handle_links_file(f):
+    with open('./links.txt', 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
 
 
 def handle_smtp_file(f):
@@ -80,14 +89,13 @@ def handle_phone_input(p):
         f.write(str('phone_no')+"\n")
     df = pd.read_csv('Data/phone_no.csv')
     if "," in str(p):
-        numbers=str(p).split(",")
-        length=len(numbers)
+        numbers = str(p).split(",")
+        length = len(numbers)
         for i in range(length):
             df.at[i, 'phone_no'] = numbers[i]
     else:
         df.at[0, 'phone_no'] = p
 
-    
     df.to_csv('Data/phone_no.csv', index=False)
 
 
