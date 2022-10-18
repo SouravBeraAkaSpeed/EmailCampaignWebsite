@@ -569,7 +569,7 @@
                 "ws://" + window.location.host + "/ws/notification/"
             )
             document.getElementById("start").innerHTML = "STOP"
-            document.getElementById("logging").innerHTML = "loading..."
+            document.getElementById("log").innerHTML += "loading..."
             document.getElementById("draggable").innerHTML += "loading..."
             $.get("dashboard/" + pk, function (data) {
                 if (data.isDataNotUploaded) {
