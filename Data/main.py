@@ -182,7 +182,7 @@ def main(delay_per_email, folder):
             for file in csv_files:
 
                 if "smtps" not in file:
-                    Subject = Subject.replace(f"[{file.split('.')[0].replace('/','')}]", str(globals()[
+                    Subject = Subject.replace("{{"+f"{file.split('.')[0].replace('/','')}"+"}}", str(globals()[
                                               f"{file.split('.')[0].replace('/','')}"][0][f"{file.split('.')[0].replace('/','')}"]))
 
             # Subject = Header(Subject)
