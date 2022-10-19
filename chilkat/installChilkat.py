@@ -1,5 +1,13 @@
 import sys, site, shutil, os, platform
 
+if os.path.exists("2.6"):
+    print("----")
+    print(sys.path)
+    print("---- Python 2.6 requires a manual install.")
+    print("---- To install the Chilkat module, copy chilkat.py and _chilkat.so to the Python 2.6 site packages directory.")
+    print("---- One of the above listed directories is the site-packages directory.")
+    exit()
+
 # make sure we are installing Chilkat for the correct
 # Python version, the correct architecture (32-bit/64-bit/...),
 # and the correct operating system (Linux, Windows, ...).
@@ -29,6 +37,9 @@ if "arm" in myMachine:
 if myMachine == "AMD64":
     myMachine = "x86_64"
 
+if myMachine == "amd64":
+    myMachine = "x86_64"
+
 if myMachine == "i386":
     myMachine = "i686"
 
@@ -37,7 +48,9 @@ if myMachine == "i386":
 skipArchCheck = False
 if (mySystem == "Windows") and (myMachine == "x86_64"):
     skipArchCheck = True
-
+if (mySystem == "SunOS"):
+	skipArchCheck = True
+	
 # Make sure this Chilkat download is for the correct processor architecture
 if not skipArchCheck:
     if not os.path.exists(myMachine):

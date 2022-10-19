@@ -1126,375 +1126,6 @@ class CkByteData(_object):
 CkByteData_swigregister = _chilkat.CkByteData_swigregister
 CkByteData_swigregister(CkByteData)
 
-class CkKeyContainer(_object):
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, CkKeyContainer, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, CkKeyContainer, name)
-    __repr__ = _swig_repr
-
-    def __init__(self):
-        this = _chilkat.new_CkKeyContainer()
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
-    __swig_destroy__ = _chilkat.delete_CkKeyContainer
-    __del__ = lambda self: None
-
-    def get_Utf8(self):
-        return _chilkat.CkKeyContainer_get_Utf8(self)
-
-    def put_Utf8(self, b):
-        return _chilkat.CkKeyContainer_put_Utf8(self, b)
-
-    def get_IsOpen(self):
-        return _chilkat.CkKeyContainer_get_IsOpen(self)
-
-    def get_IsMachineKeyset(self):
-        return _chilkat.CkKeyContainer_get_IsMachineKeyset(self)
-
-    def get_ContainerName(self, name):
-        return _chilkat.CkKeyContainer_get_ContainerName(self, name)
-
-    def GenerateUuid(self, guid):
-        return _chilkat.CkKeyContainer_GenerateUuid(self, guid)
-
-    def CreateContainer(self, name, machineKeyset):
-        return _chilkat.CkKeyContainer_CreateContainer(self, name, machineKeyset)
-
-    def OpenContainer(self, name, needPrivateKeyAccess, machineKeyset):
-        return _chilkat.CkKeyContainer_OpenContainer(self, name, needPrivateKeyAccess, machineKeyset)
-
-    def DeleteContainer(self):
-        return _chilkat.CkKeyContainer_DeleteContainer(self)
-
-    def CloseContainer(self):
-        return _chilkat.CkKeyContainer_CloseContainer(self)
-
-    def GenerateKeyPair(self, bKeyExchangePair, keyLengthInBits):
-        return _chilkat.CkKeyContainer_GenerateKeyPair(self, bKeyExchangePair, keyLengthInBits)
-
-    def GetPrivateKey(self, bKeyExchangePair):
-        return _chilkat.CkKeyContainer_GetPrivateKey(self, bKeyExchangePair)
-
-    def GetPublicKey(self, bKeyExchangePair):
-        return _chilkat.CkKeyContainer_GetPublicKey(self, bKeyExchangePair)
-
-    def ImportPublicKey(self, key, bKeyExchangePair):
-        return _chilkat.CkKeyContainer_ImportPublicKey(self, key, bKeyExchangePair)
-
-    def ImportPrivateKey(self, key, bKeyExchangePair):
-        return _chilkat.CkKeyContainer_ImportPrivateKey(self, key, bKeyExchangePair)
-
-    def FetchContainerNames(self, bMachineKeyset):
-        return _chilkat.CkKeyContainer_FetchContainerNames(self, bMachineKeyset)
-
-    def GetNumContainers(self, bMachineKeyset):
-        return _chilkat.CkKeyContainer_GetNumContainers(self, bMachineKeyset)
-
-    def GetNthContainerName(self, bMachineKeyset, index, name):
-        return _chilkat.CkKeyContainer_GetNthContainerName(self, bMachineKeyset, index, name)
-
-    def getNthContainerName(self, bMachineKeyset, index):
-        return _chilkat.CkKeyContainer_getNthContainerName(self, bMachineKeyset, index)
-
-    def containerName(self):
-        return _chilkat.CkKeyContainer_containerName(self)
-
-    def generateUuid(self):
-        return _chilkat.CkKeyContainer_generateUuid(self)
-
-    def SaveLastError(self, filename):
-        return _chilkat.CkKeyContainer_SaveLastError(self, filename)
-
-    def LastErrorXml(self, str):
-        return _chilkat.CkKeyContainer_LastErrorXml(self, str)
-
-    def LastErrorHtml(self, str):
-        return _chilkat.CkKeyContainer_LastErrorHtml(self, str)
-
-    def LastErrorText(self, str):
-        return _chilkat.CkKeyContainer_LastErrorText(self, str)
-
-    def lastErrorText(self):
-        return _chilkat.CkKeyContainer_lastErrorText(self)
-
-    def lastErrorXml(self):
-        return _chilkat.CkKeyContainer_lastErrorXml(self)
-
-    def lastErrorHtml(self):
-        return _chilkat.CkKeyContainer_lastErrorHtml(self)
-CkKeyContainer_swigregister = _chilkat.CkKeyContainer_swigregister
-CkKeyContainer_swigregister(CkKeyContainer)
-
-class CkCsp(_object):
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, CkCsp, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, CkCsp, name)
-    __repr__ = _swig_repr
-
-    def __init__(self):
-        this = _chilkat.new_CkCsp()
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
-    __swig_destroy__ = _chilkat.delete_CkCsp
-    __del__ = lambda self: None
-
-    def get_Utf8(self):
-        return _chilkat.CkCsp_get_Utf8(self)
-
-    def put_Utf8(self, b):
-        return _chilkat.CkCsp_put_Utf8(self, b)
-
-    def lastErrorText(self):
-        return _chilkat.CkCsp_lastErrorText(self)
-
-    def lastErrorXml(self):
-        return _chilkat.CkCsp_lastErrorXml(self)
-
-    def lastErrorHtml(self):
-        return _chilkat.CkCsp_lastErrorHtml(self)
-
-    def get_KeyContainerName(self, str):
-        return _chilkat.CkCsp_get_KeyContainerName(self, str)
-
-    def keyContainerName(self):
-        return _chilkat.CkCsp_keyContainerName(self)
-
-    def put_KeyContainerName(self, newVal):
-        return _chilkat.CkCsp_put_KeyContainerName(self, newVal)
-
-    def get_DebugLogFilePath(self, str):
-        return _chilkat.CkCsp_get_DebugLogFilePath(self, str)
-
-    def debugLogFilePath(self):
-        return _chilkat.CkCsp_debugLogFilePath(self)
-
-    def put_DebugLogFilePath(self, newVal):
-        return _chilkat.CkCsp_put_DebugLogFilePath(self, newVal)
-
-    def get_VerboseLogging(self):
-        return _chilkat.CkCsp_get_VerboseLogging(self)
-
-    def put_VerboseLogging(self, newVal):
-        return _chilkat.CkCsp_put_VerboseLogging(self, newVal)
-
-    def Initialize(self):
-        return _chilkat.CkCsp_Initialize(self)
-
-    def get_MachineKeyset(self):
-        return _chilkat.CkCsp_get_MachineKeyset(self)
-
-    def put_MachineKeyset(self, val):
-        return _chilkat.CkCsp_put_MachineKeyset(self, val)
-
-    def hashAlgorithm(self):
-        return _chilkat.CkCsp_hashAlgorithm(self)
-
-    def encryptAlgorithm(self):
-        return _chilkat.CkCsp_encryptAlgorithm(self)
-
-    def providerName(self):
-        return _chilkat.CkCsp_providerName(self)
-
-    def nthKeyContainerName(self, index):
-        return _chilkat.CkCsp_nthKeyContainerName(self, index)
-
-    def nthSignatureAlgorithm(self, index):
-        return _chilkat.CkCsp_nthSignatureAlgorithm(self, index)
-
-    def nthKeyExchangeAlgorithm(self, index):
-        return _chilkat.CkCsp_nthKeyExchangeAlgorithm(self, index)
-
-    def nthHashAlgorithmName(self, index):
-        return _chilkat.CkCsp_nthHashAlgorithmName(self, index)
-
-    def nthEncryptionAlgorithm(self, index):
-        return _chilkat.CkCsp_nthEncryptionAlgorithm(self, index)
-
-    def get_ProviderType(self):
-        return _chilkat.CkCsp_get_ProviderType(self)
-
-    def GetKeyContainerNames(self):
-        return _chilkat.CkCsp_GetKeyContainerNames(self)
-
-    def SetHashAlgorithm(self, name):
-        return _chilkat.CkCsp_SetHashAlgorithm(self, name)
-
-    def HasHashAlgorithm(self, name, numBits):
-        return _chilkat.CkCsp_HasHashAlgorithm(self, name, numBits)
-
-    def SetEncryptAlgorithm(self, name):
-        return _chilkat.CkCsp_SetEncryptAlgorithm(self, name)
-
-    def HasEncryptAlgorithm(self, name, numBits):
-        return _chilkat.CkCsp_HasEncryptAlgorithm(self, name, numBits)
-
-    def get_HashAlgorithmID(self):
-        return _chilkat.CkCsp_get_HashAlgorithmID(self)
-
-    def get_EncryptAlgorithmID(self):
-        return _chilkat.CkCsp_get_EncryptAlgorithmID(self)
-
-    def get_HashNumBits(self):
-        return _chilkat.CkCsp_get_HashNumBits(self)
-
-    def get_EncryptNumBits(self):
-        return _chilkat.CkCsp_get_EncryptNumBits(self)
-
-    def get_HashAlgorithm(self, alg):
-        return _chilkat.CkCsp_get_HashAlgorithm(self, alg)
-
-    def get_EncryptAlgorithm(self, alg):
-        return _chilkat.CkCsp_get_EncryptAlgorithm(self, alg)
-
-    def NthKeyContainerName(self, index, name):
-        return _chilkat.CkCsp_NthKeyContainerName(self, index, name)
-
-    def NthSignatureAlgorithm(self, index, name):
-        return _chilkat.CkCsp_NthSignatureAlgorithm(self, index, name)
-
-    def NthKeyExchangeAlgorithm(self, index, name):
-        return _chilkat.CkCsp_NthKeyExchangeAlgorithm(self, index, name)
-
-    def NthHashAlgorithmName(self, index, name):
-        return _chilkat.CkCsp_NthHashAlgorithmName(self, index, name)
-
-    def NthEncryptionAlgorithm(self, index, name):
-        return _chilkat.CkCsp_NthEncryptionAlgorithm(self, index, name)
-
-    def get_NumKeyContainers(self):
-        return _chilkat.CkCsp_get_NumKeyContainers(self)
-
-    def NthSignatureNumBits(self, index):
-        return _chilkat.CkCsp_NthSignatureNumBits(self, index)
-
-    def NthKeyExchangeNumBits(self, index):
-        return _chilkat.CkCsp_NthKeyExchangeNumBits(self, index)
-
-    def NthHashNumBits(self, index):
-        return _chilkat.CkCsp_NthHashNumBits(self, index)
-
-    def NthEncryptionNumBits(self, index):
-        return _chilkat.CkCsp_NthEncryptionNumBits(self, index)
-
-    def get_ProviderName(self, name):
-        return _chilkat.CkCsp_get_ProviderName(self, name)
-
-    def put_ProviderName(self, name):
-        return _chilkat.CkCsp_put_ProviderName(self, name)
-
-    def get_NumKeyExchangeAlgorithms(self):
-        return _chilkat.CkCsp_get_NumKeyExchangeAlgorithms(self)
-
-    def get_NumSignatureAlgorithms(self):
-        return _chilkat.CkCsp_get_NumSignatureAlgorithms(self)
-
-    def get_NumEncryptAlgorithms(self):
-        return _chilkat.CkCsp_get_NumEncryptAlgorithms(self)
-
-    def get_NumHashAlgorithms(self):
-        return _chilkat.CkCsp_get_NumHashAlgorithms(self)
-
-    def SaveLastError(self, filename):
-        return _chilkat.CkCsp_SaveLastError(self, filename)
-
-    def LastErrorXml(self, str):
-        return _chilkat.CkCsp_LastErrorXml(self, str)
-
-    def LastErrorHtml(self, str):
-        return _chilkat.CkCsp_LastErrorHtml(self, str)
-
-    def LastErrorText(self, str):
-        return _chilkat.CkCsp_LastErrorText(self, str)
-CkCsp_swigregister = _chilkat.CkCsp_swigregister
-CkCsp_swigregister(CkCsp)
-
-class CkCreateCS(_object):
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, CkCreateCS, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, CkCreateCS, name)
-    __repr__ = _swig_repr
-
-    def __init__(self):
-        this = _chilkat.new_CkCreateCS()
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
-    __swig_destroy__ = _chilkat.delete_CkCreateCS
-    __del__ = lambda self: None
-
-    def lastErrorText(self):
-        return _chilkat.CkCreateCS_lastErrorText(self)
-
-    def lastErrorXml(self):
-        return _chilkat.CkCreateCS_lastErrorXml(self)
-
-    def lastErrorHtml(self):
-        return _chilkat.CkCreateCS_lastErrorHtml(self)
-
-    def get_Utf8(self):
-        return _chilkat.CkCreateCS_get_Utf8(self)
-
-    def put_Utf8(self, b):
-        return _chilkat.CkCreateCS_put_Utf8(self, b)
-
-    def get_ReadOnly(self):
-        return _chilkat.CkCreateCS_get_ReadOnly(self)
-
-    def put_ReadOnly(self, newVal):
-        return _chilkat.CkCreateCS_put_ReadOnly(self, newVal)
-
-    def get_Version(self, version):
-        return _chilkat.CkCreateCS_get_Version(self, version)
-
-    def CreateRegistryStore(self, regRoot, regPath):
-        return _chilkat.CkCreateCS_CreateRegistryStore(self, regRoot, regPath)
-
-    def OpenRegistryStore(self, regRoot, regPath):
-        return _chilkat.CkCreateCS_OpenRegistryStore(self, regRoot, regPath)
-
-    def CreateFileStore(self, filename):
-        return _chilkat.CkCreateCS_CreateFileStore(self, filename)
-
-    def OpenFileStore(self, filename):
-        return _chilkat.CkCreateCS_OpenFileStore(self, filename)
-
-    def CreateMemoryStore(self):
-        return _chilkat.CkCreateCS_CreateMemoryStore(self)
-
-    def OpenChilkatStore(self):
-        return _chilkat.CkCreateCS_OpenChilkatStore(self)
-
-    def OpenOutlookStore(self):
-        return _chilkat.CkCreateCS_OpenOutlookStore(self)
-
-    def OpenLocalSystemStore(self):
-        return _chilkat.CkCreateCS_OpenLocalSystemStore(self)
-
-    def OpenCurrentUserStore(self):
-        return _chilkat.CkCreateCS_OpenCurrentUserStore(self)
-
-    def SaveLastError(self, filename):
-        return _chilkat.CkCreateCS_SaveLastError(self, filename)
-
-    def LastErrorXml(self, str):
-        return _chilkat.CkCreateCS_LastErrorXml(self, str)
-
-    def LastErrorHtml(self, str):
-        return _chilkat.CkCreateCS_LastErrorHtml(self, str)
-
-    def LastErrorText(self, str):
-        return _chilkat.CkCreateCS_LastErrorText(self, str)
-CkCreateCS_swigregister = _chilkat.CkCreateCS_swigregister
-CkCreateCS_swigregister(CkCreateCS)
-
 class CkAsn(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, CkAsn, name, value)
@@ -4145,9 +3776,6 @@ class CkCertStore(_object):
     def get_NumCertificates(self):
         return _chilkat.CkCertStore_get_NumCertificates(self)
 
-    def get_NumEmailCerts(self):
-        return _chilkat.CkCertStore_get_NumEmailCerts(self)
-
     def get_SmartCardPin(self, str):
         return _chilkat.CkCertStore_get_SmartCardPin(self, str)
 
@@ -4177,18 +3805,6 @@ class CkCertStore(_object):
 
     def version(self):
         return _chilkat.CkCertStore_version(self)
-
-    def AddCertificate(self, cert):
-        return _chilkat.CkCertStore_AddCertificate(self, cert)
-
-    def CreateFileStore(self, filename):
-        return _chilkat.CkCertStore_CreateFileStore(self, filename)
-
-    def CreateMemoryStore(self):
-        return _chilkat.CkCertStore_CreateMemoryStore(self)
-
-    def CreateRegistryStore(self, regRoot, regPath):
-        return _chilkat.CkCertStore_CreateRegistryStore(self, regRoot, regPath)
 
     def FindCertByKeyContainer(self, name):
         return _chilkat.CkCertStore_FindCertByKeyContainer(self, name)
@@ -4220,9 +3836,6 @@ class CkCertStore(_object):
     def GetCertificate(self, index):
         return _chilkat.CkCertStore_GetCertificate(self, index)
 
-    def GetEmailCert(self, index):
-        return _chilkat.CkCertStore_GetEmailCert(self, index)
-
     def LoadPemFile(self, pemPath):
         return _chilkat.CkCertStore_LoadPemFile(self, pemPath)
 
@@ -4234,27 +3847,6 @@ class CkCertStore(_object):
 
     def LoadPfxFile(self, pfxFilename, password):
         return _chilkat.CkCertStore_LoadPfxFile(self, pfxFilename, password)
-
-    def OpenCurrentUserStore(self, readOnly):
-        return _chilkat.CkCertStore_OpenCurrentUserStore(self, readOnly)
-
-    def OpenFileStore(self, filename, readOnly):
-        return _chilkat.CkCertStore_OpenFileStore(self, filename, readOnly)
-
-    def OpenLocalSystemStore(self, readOnly):
-        return _chilkat.CkCertStore_OpenLocalSystemStore(self, readOnly)
-
-    def OpenRegistryStore(self, regRoot, regPath, readOnly):
-        return _chilkat.CkCertStore_OpenRegistryStore(self, regRoot, regPath, readOnly)
-
-    def OpenSmartcard(self, csp):
-        return _chilkat.CkCertStore_OpenSmartcard(self, csp)
-
-    def OpenWindowsStore(self, storeLocation, storeName, readOnly):
-        return _chilkat.CkCertStore_OpenWindowsStore(self, storeLocation, storeName, readOnly)
-
-    def RemoveCertificate(self, cert):
-        return _chilkat.CkCertStore_RemoveCertificate(self, cert)
 
     def SaveLastError(self, path):
         return _chilkat.CkCertStore_SaveLastError(self, path)
@@ -16118,12 +15710,6 @@ class CkMailMan(_object):
     def put_LastMethodSuccess(self, newVal):
         return _chilkat.CkMailMan_put_LastMethodSuccess(self, newVal)
 
-    def get_LastSendQFilename(self, str):
-        return _chilkat.CkMailMan_get_LastSendQFilename(self, str)
-
-    def lastSendQFilename(self):
-        return _chilkat.CkMailMan_lastSendQFilename(self)
-
     def get_LastSmtpStatus(self):
         return _chilkat.CkMailMan_get_LastSmtpStatus(self)
 
@@ -16742,9 +16328,6 @@ class CkMailMan(_object):
     def LoadMime(self, mimeText):
         return _chilkat.CkMailMan_LoadMime(self, mimeText)
 
-    def LoadQueuedEmail(self, path):
-        return _chilkat.CkMailMan_LoadQueuedEmail(self, path)
-
     def LoadTaskCaller(self, task):
         return _chilkat.CkMailMan_LoadTaskCaller(self, task)
 
@@ -16880,23 +16463,11 @@ class CkMailMan(_object):
     def SendMimeBytesAsync(self, fromAddr, recipients, mimeSource):
         return _chilkat.CkMailMan_SendMimeBytesAsync(self, fromAddr, recipients, mimeSource)
 
-    def SendMimeBytesQ(self, arg2, recipients, mimeData):
-        return _chilkat.CkMailMan_SendMimeBytesQ(self, arg2, recipients, mimeData)
-
-    def SendMimeQ(self, fromAddr, recipients, mimeSource):
-        return _chilkat.CkMailMan_SendMimeQ(self, fromAddr, recipients, mimeSource)
-
     def SendMimeToList(self, fromAddr, distListFilename, mimeSource):
         return _chilkat.CkMailMan_SendMimeToList(self, fromAddr, distListFilename, mimeSource)
 
     def SendMimeToListAsync(self, fromAddr, distListFilename, mimeSource):
         return _chilkat.CkMailMan_SendMimeToListAsync(self, fromAddr, distListFilename, mimeSource)
-
-    def SendQ(self, email):
-        return _chilkat.CkMailMan_SendQ(self, email)
-
-    def SendQ2(self, email, queueDir):
-        return _chilkat.CkMailMan_SendQ2(self, email, queueDir)
 
     def SendToDistributionList(self, emailObj, recipientList):
         return _chilkat.CkMailMan_SendToDistributionList(self, emailObj, recipientList)
@@ -19430,9 +19001,6 @@ class CkPfx(_object):
     def safeBagAttr(self, forPrivateKey, index, attrName):
         return _chilkat.CkPfx_safeBagAttr(self, forPrivateKey, index, attrName)
 
-    def ImportToWindows(self, exportable, userProtected, machineKeyset, allowOverwriteKey, allowExport, leafStore, intermediateStore, rootStore, extraOptions):
-        return _chilkat.CkPfx_ImportToWindows(self, exportable, userProtected, machineKeyset, allowOverwriteKey, allowExport, leafStore, intermediateStore, rootStore, extraOptions)
-
     def LastJsonData(self):
         return _chilkat.CkPfx_LastJsonData(self)
 
@@ -19735,12 +19303,6 @@ class CkPrivateKey(_object):
 
     def LoadPkcs8File(self, path):
         return _chilkat.CkPrivateKey_LoadPkcs8File(self, path)
-
-    def LoadPvk(self, data, password):
-        return _chilkat.CkPrivateKey_LoadPvk(self, data, password)
-
-    def LoadPvkFile(self, path, password):
-        return _chilkat.CkPrivateKey_LoadPvkFile(self, path, password)
 
     def LoadRsaDer(self, data):
         return _chilkat.CkPrivateKey_LoadRsaDer(self, data)
@@ -29696,30 +29258,6 @@ class CkZip(_object):
     def put_AppendFromDir(self, newVal):
         return _chilkat.CkZip_put_AppendFromDir(self, newVal)
 
-    def get_AutoRun(self, str):
-        return _chilkat.CkZip_get_AutoRun(self, str)
-
-    def autoRun(self):
-        return _chilkat.CkZip_autoRun(self)
-
-    def put_AutoRun(self, newVal):
-        return _chilkat.CkZip_put_AutoRun(self, newVal)
-
-    def get_AutoRunParams(self, str):
-        return _chilkat.CkZip_get_AutoRunParams(self, str)
-
-    def autoRunParams(self):
-        return _chilkat.CkZip_autoRunParams(self)
-
-    def put_AutoRunParams(self, newVal):
-        return _chilkat.CkZip_put_AutoRunParams(self, newVal)
-
-    def get_AutoTemp(self):
-        return _chilkat.CkZip_get_AutoTemp(self)
-
-    def put_AutoTemp(self, newVal):
-        return _chilkat.CkZip_put_AutoTemp(self, newVal)
-
     def get_CaseSensitive(self):
         return _chilkat.CkZip_get_CaseSensitive(self)
 
@@ -29791,84 +29329,6 @@ class CkZip(_object):
 
     def put_EncryptPassword(self, newVal):
         return _chilkat.CkZip_put_EncryptPassword(self, newVal)
-
-    def get_ExeDefaultDir(self, str):
-        return _chilkat.CkZip_get_ExeDefaultDir(self, str)
-
-    def exeDefaultDir(self):
-        return _chilkat.CkZip_exeDefaultDir(self)
-
-    def put_ExeDefaultDir(self, newVal):
-        return _chilkat.CkZip_put_ExeDefaultDir(self, newVal)
-
-    def get_ExeFinishNotifier(self):
-        return _chilkat.CkZip_get_ExeFinishNotifier(self)
-
-    def put_ExeFinishNotifier(self, newVal):
-        return _chilkat.CkZip_put_ExeFinishNotifier(self, newVal)
-
-    def get_ExeIconFile(self, str):
-        return _chilkat.CkZip_get_ExeIconFile(self, str)
-
-    def exeIconFile(self):
-        return _chilkat.CkZip_exeIconFile(self)
-
-    def put_ExeIconFile(self, newVal):
-        return _chilkat.CkZip_put_ExeIconFile(self, newVal)
-
-    def get_ExeNoInterface(self):
-        return _chilkat.CkZip_get_ExeNoInterface(self)
-
-    def put_ExeNoInterface(self, newVal):
-        return _chilkat.CkZip_put_ExeNoInterface(self, newVal)
-
-    def get_ExeSilentProgress(self):
-        return _chilkat.CkZip_get_ExeSilentProgress(self)
-
-    def put_ExeSilentProgress(self, newVal):
-        return _chilkat.CkZip_put_ExeSilentProgress(self, newVal)
-
-    def get_ExeTitle(self, str):
-        return _chilkat.CkZip_get_ExeTitle(self, str)
-
-    def exeTitle(self):
-        return _chilkat.CkZip_exeTitle(self)
-
-    def put_ExeTitle(self, newVal):
-        return _chilkat.CkZip_put_ExeTitle(self, newVal)
-
-    def get_ExeUnzipCaption(self, str):
-        return _chilkat.CkZip_get_ExeUnzipCaption(self, str)
-
-    def exeUnzipCaption(self):
-        return _chilkat.CkZip_exeUnzipCaption(self)
-
-    def put_ExeUnzipCaption(self, newVal):
-        return _chilkat.CkZip_put_ExeUnzipCaption(self, newVal)
-
-    def get_ExeUnzipDir(self, str):
-        return _chilkat.CkZip_get_ExeUnzipDir(self, str)
-
-    def exeUnzipDir(self):
-        return _chilkat.CkZip_exeUnzipDir(self)
-
-    def put_ExeUnzipDir(self, newVal):
-        return _chilkat.CkZip_put_ExeUnzipDir(self, newVal)
-
-    def get_ExeWaitForSetup(self):
-        return _chilkat.CkZip_get_ExeWaitForSetup(self)
-
-    def put_ExeWaitForSetup(self, newVal):
-        return _chilkat.CkZip_put_ExeWaitForSetup(self, newVal)
-
-    def get_ExeXmlConfig(self, str):
-        return _chilkat.CkZip_get_ExeXmlConfig(self, str)
-
-    def exeXmlConfig(self):
-        return _chilkat.CkZip_exeXmlConfig(self)
-
-    def put_ExeXmlConfig(self, newVal):
-        return _chilkat.CkZip_put_ExeXmlConfig(self, newVal)
 
     def get_FileCount(self):
         return _chilkat.CkZip_get_FileCount(self)
@@ -30017,9 +29477,6 @@ class CkZip(_object):
     def put_ZipxDefaultAlg(self, newVal):
         return _chilkat.CkZip_put_ZipxDefaultAlg(self, newVal)
 
-    def AddEmbedded(self, exeFilename, resourceName, zipFilename):
-        return _chilkat.CkZip_AddEmbedded(self, exeFilename, resourceName, zipFilename)
-
     def AddNoCompressExtension(self, fileExtension):
         return _chilkat.CkZip_AddNoCompressExtension(self, fileExtension)
 
@@ -30095,12 +29552,6 @@ class CkZip(_object):
     def ExtractAsync(self, dirPath):
         return _chilkat.CkZip_ExtractAsync(self, dirPath)
 
-    def ExtractExe(self, exePath, dirPath):
-        return _chilkat.CkZip_ExtractExe(self, exePath, dirPath)
-
-    def ExtractExeAsync(self, exePath, dirPath):
-        return _chilkat.CkZip_ExtractExeAsync(self, exePath, dirPath)
-
     def ExtractInto(self, dirPath):
         return _chilkat.CkZip_ExtractInto(self, dirPath)
 
@@ -30140,15 +29591,6 @@ class CkZip(_object):
     def GetExclusions(self):
         return _chilkat.CkZip_GetExclusions(self)
 
-    def GetExeConfigParam(self, name, outStr):
-        return _chilkat.CkZip_GetExeConfigParam(self, name, outStr)
-
-    def getExeConfigParam(self, name):
-        return _chilkat.CkZip_getExeConfigParam(self, name)
-
-    def exeConfigParam(self, name):
-        return _chilkat.CkZip_exeConfigParam(self, name)
-
     def InsertNew(self, fileName, beforeIndex):
         return _chilkat.CkZip_InsertNew(self, fileName, beforeIndex)
 
@@ -30170,17 +29612,11 @@ class CkZip(_object):
     def OpenBd(self, binData):
         return _chilkat.CkZip_OpenBd(self, binData)
 
-    def OpenEmbedded(self, exeFilename, resourceName):
-        return _chilkat.CkZip_OpenEmbedded(self, exeFilename, resourceName)
-
     def OpenFromByteData(self, byteData):
         return _chilkat.CkZip_OpenFromByteData(self, byteData)
 
     def OpenFromMemory(self, inData):
         return _chilkat.CkZip_OpenFromMemory(self, inData)
-
-    def OpenMyEmbedded(self, resourceName):
-        return _chilkat.CkZip_OpenMyEmbedded(self, resourceName)
 
     def OpenZip(self, zipPath):
         return _chilkat.CkZip_OpenZip(self, zipPath)
@@ -30194,14 +29630,8 @@ class CkZip(_object):
     def QuickAppendAsync(self, ZipFileName):
         return _chilkat.CkZip_QuickAppendAsync(self, ZipFileName)
 
-    def RemoveEmbedded(self, exeFilename, resourceName):
-        return _chilkat.CkZip_RemoveEmbedded(self, exeFilename, resourceName)
-
     def RemoveNoCompressExtension(self, fileExtension):
         return _chilkat.CkZip_RemoveNoCompressExtension(self, fileExtension)
-
-    def ReplaceEmbedded(self, exeFilename, resourceName, zipFilename):
-        return _chilkat.CkZip_ReplaceEmbedded(self, exeFilename, resourceName, zipFilename)
 
     def SaveLastError(self, path):
         return _chilkat.CkZip_SaveLastError(self, path)
@@ -30211,9 +29641,6 @@ class CkZip(_object):
 
     def SetExclusions(self, excludePatterns):
         return _chilkat.CkZip_SetExclusions(self, excludePatterns)
-
-    def SetExeConfigParam(self, paramName, paramValue):
-        return _chilkat.CkZip_SetExeConfigParam(self, paramName, paramValue)
 
     def SetPassword(self, password):
         return _chilkat.CkZip_SetPassword(self, password)
@@ -30259,15 +29686,6 @@ class CkZip(_object):
 
     def WriteBdAsync(self, binData):
         return _chilkat.CkZip_WriteBdAsync(self, binData)
-
-    def WriteExe(self, exeFilename):
-        return _chilkat.CkZip_WriteExe(self, exeFilename)
-
-    def WriteExe2(self, exePath, destExePath, bAesEncrypt, keyLength, password):
-        return _chilkat.CkZip_WriteExe2(self, exePath, destExePath, bAesEncrypt, keyLength, password)
-
-    def WriteExeToMemory(self, outBytes):
-        return _chilkat.CkZip_WriteExeToMemory(self, outBytes)
 
     def WriteToMemory(self, outData):
         return _chilkat.CkZip_WriteToMemory(self, outData)
@@ -31164,195 +30582,6 @@ class CkPkcs11(_object):
         return _chilkat.CkPkcs11_SetPin(self, oldPin, newPin)
 CkPkcs11_swigregister = _chilkat.CkPkcs11_swigregister
 CkPkcs11_swigregister(CkPkcs11)
-
-class CkScMinidriver(_object):
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, CkScMinidriver, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, CkScMinidriver, name)
-    __repr__ = _swig_repr
-
-    def __init__(self):
-        this = _chilkat.new_CkScMinidriver()
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
-    __swig_destroy__ = _chilkat.delete_CkScMinidriver
-    __del__ = lambda self: None
-
-    def get_Utf8(self):
-        return _chilkat.CkScMinidriver_get_Utf8(self)
-
-    def put_Utf8(self, b):
-        return _chilkat.CkScMinidriver_put_Utf8(self, b)
-
-    def LastErrorXml(self, str):
-        return _chilkat.CkScMinidriver_LastErrorXml(self, str)
-
-    def LastErrorHtml(self, str):
-        return _chilkat.CkScMinidriver_LastErrorHtml(self, str)
-
-    def LastErrorText(self, str):
-        return _chilkat.CkScMinidriver_LastErrorText(self, str)
-
-    def get_Atr(self, str):
-        return _chilkat.CkScMinidriver_get_Atr(self, str)
-
-    def atr(self):
-        return _chilkat.CkScMinidriver_atr(self)
-
-    def get_CardName(self, str):
-        return _chilkat.CkScMinidriver_get_CardName(self, str)
-
-    def cardName(self):
-        return _chilkat.CkScMinidriver_cardName(self)
-
-    def get_DebugLogFilePath(self, str):
-        return _chilkat.CkScMinidriver_get_DebugLogFilePath(self, str)
-
-    def debugLogFilePath(self):
-        return _chilkat.CkScMinidriver_debugLogFilePath(self)
-
-    def put_DebugLogFilePath(self, newVal):
-        return _chilkat.CkScMinidriver_put_DebugLogFilePath(self, newVal)
-
-    def get_LastErrorHtml(self, str):
-        return _chilkat.CkScMinidriver_get_LastErrorHtml(self, str)
-
-    def lastErrorHtml(self):
-        return _chilkat.CkScMinidriver_lastErrorHtml(self)
-
-    def get_LastErrorText(self, str):
-        return _chilkat.CkScMinidriver_get_LastErrorText(self, str)
-
-    def lastErrorText(self):
-        return _chilkat.CkScMinidriver_lastErrorText(self)
-
-    def get_LastErrorXml(self, str):
-        return _chilkat.CkScMinidriver_get_LastErrorXml(self, str)
-
-    def lastErrorXml(self):
-        return _chilkat.CkScMinidriver_lastErrorXml(self)
-
-    def get_LastMethodSuccess(self):
-        return _chilkat.CkScMinidriver_get_LastMethodSuccess(self)
-
-    def put_LastMethodSuccess(self, newVal):
-        return _chilkat.CkScMinidriver_put_LastMethodSuccess(self, newVal)
-
-    def get_MaxContainers(self):
-        return _chilkat.CkScMinidriver_get_MaxContainers(self)
-
-    def get_RsaPaddingHash(self, str):
-        return _chilkat.CkScMinidriver_get_RsaPaddingHash(self, str)
-
-    def rsaPaddingHash(self):
-        return _chilkat.CkScMinidriver_rsaPaddingHash(self)
-
-    def put_RsaPaddingHash(self, newVal):
-        return _chilkat.CkScMinidriver_put_RsaPaddingHash(self, newVal)
-
-    def get_RsaPaddingScheme(self, str):
-        return _chilkat.CkScMinidriver_get_RsaPaddingScheme(self, str)
-
-    def rsaPaddingScheme(self):
-        return _chilkat.CkScMinidriver_rsaPaddingScheme(self)
-
-    def put_RsaPaddingScheme(self, newVal):
-        return _chilkat.CkScMinidriver_put_RsaPaddingScheme(self, newVal)
-
-    def get_UncommonOptions(self, str):
-        return _chilkat.CkScMinidriver_get_UncommonOptions(self, str)
-
-    def uncommonOptions(self):
-        return _chilkat.CkScMinidriver_uncommonOptions(self)
-
-    def put_UncommonOptions(self, newVal):
-        return _chilkat.CkScMinidriver_put_UncommonOptions(self, newVal)
-
-    def get_VerboseLogging(self):
-        return _chilkat.CkScMinidriver_get_VerboseLogging(self)
-
-    def put_VerboseLogging(self, newVal):
-        return _chilkat.CkScMinidriver_put_VerboseLogging(self, newVal)
-
-    def get_Version(self, str):
-        return _chilkat.CkScMinidriver_get_Version(self, str)
-
-    def version(self):
-        return _chilkat.CkScMinidriver_version(self)
-
-    def AcquireContext(self, readerName):
-        return _chilkat.CkScMinidriver_AcquireContext(self, readerName)
-
-    def CardDeleteFile(self, dirName, fileName):
-        return _chilkat.CkScMinidriver_CardDeleteFile(self, dirName, fileName)
-
-    def DeleteCert(self, cert, delPrivKey):
-        return _chilkat.CkScMinidriver_DeleteCert(self, cert, delPrivKey)
-
-    def DeleteContext(self):
-        return _chilkat.CkScMinidriver_DeleteContext(self)
-
-    def DeleteKeyContainer(self, containerIndex):
-        return _chilkat.CkScMinidriver_DeleteKeyContainer(self, containerIndex)
-
-    def EnumFiles(self, dirName, st):
-        return _chilkat.CkScMinidriver_EnumFiles(self, dirName, st)
-
-    def FindCert(self, certPart, partValue, cert):
-        return _chilkat.CkScMinidriver_FindCert(self, certPart, partValue, cert)
-
-    def GenerateKey(self, containerIndex, keySpec, keyType, keySize, pinId):
-        return _chilkat.CkScMinidriver_GenerateKey(self, containerIndex, keySpec, keyType, keySize, pinId)
-
-    def GetCardProperties(self, json):
-        return _chilkat.CkScMinidriver_GetCardProperties(self, json)
-
-    def GetCert(self, containerIndex, keySpec, cert):
-        return _chilkat.CkScMinidriver_GetCert(self, containerIndex, keySpec, cert)
-
-    def GetContainerKeys(self, containerIndex, sigKey, kexKey):
-        return _chilkat.CkScMinidriver_GetContainerKeys(self, containerIndex, sigKey, kexKey)
-
-    def GetCspContainerMap(self, json):
-        return _chilkat.CkScMinidriver_GetCspContainerMap(self, json)
-
-    def ImportCert(self, cert, containerIndex, keySpec, pinId):
-        return _chilkat.CkScMinidriver_ImportCert(self, cert, containerIndex, keySpec, pinId)
-
-    def ImportKey(self, containerIndex, keySpec, privKey, pinId):
-        return _chilkat.CkScMinidriver_ImportKey(self, containerIndex, keySpec, privKey, pinId)
-
-    def ListCerts(self, certPart, st):
-        return _chilkat.CkScMinidriver_ListCerts(self, certPart, st)
-
-    def PinAuthenticate(self, pinId, pin):
-        return _chilkat.CkScMinidriver_PinAuthenticate(self, pinId, pin)
-
-    def PinAuthenticateHex(self, pinId, pin):
-        return _chilkat.CkScMinidriver_PinAuthenticateHex(self, pinId, pin)
-
-    def PinChange(self, pinId, currentPin, newPin):
-        return _chilkat.CkScMinidriver_PinChange(self, pinId, currentPin, newPin)
-
-    def PinDeauthenticate(self, pinId):
-        return _chilkat.CkScMinidriver_PinDeauthenticate(self, pinId)
-
-    def ReadFile(self, dirName, fileName, bd):
-        return _chilkat.CkScMinidriver_ReadFile(self, dirName, fileName, bd)
-
-    def SaveLastError(self, path):
-        return _chilkat.CkScMinidriver_SaveLastError(self, path)
-
-    def SignData(self, containerIndex, keySpec, hashDataAlg, bdData, bdSignedData):
-        return _chilkat.CkScMinidriver_SignData(self, containerIndex, keySpec, hashDataAlg, bdData, bdSignedData)
-
-    def WriteFile(self, dirName, fileName, bd):
-        return _chilkat.CkScMinidriver_WriteFile(self, dirName, fileName, bd)
-CkScMinidriver_swigregister = _chilkat.CkScMinidriver_swigregister
-CkScMinidriver_swigregister(CkScMinidriver)
 
 # This file is compatible with both classic and new-style classes.
 
