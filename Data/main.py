@@ -21,6 +21,7 @@ from channels.layers import get_channel_layer
 import traceback
 from datetime import date
 from E_compaign.generate_links import generate
+import chilkat
 
 now = time.time()
 
@@ -66,6 +67,7 @@ def main(delay_per_email, folder):
     # os.chdir('Data/content')
 
     contents = glob.glob(f'{folder}/content/*.html')
+    
 
     bodys = []
 
@@ -76,6 +78,21 @@ def main(delay_per_email, folder):
                 "body": content_body,
                 "name": body.split(".")[0],
             })
+
+    proxy_file=glob.glob(f'{folder}/Proxy_list.txt')
+    proxies = []
+
+    for file in proxy_file:
+        with open(file,"r") as f:
+            for line in f.readlines():
+                p=line.replace("\n","").split(",")
+
+                proxies.append({
+                    "ip": p[0],
+                    "port": p[1],
+                    "username": p[2],
+                    "password": p[3]
+                })
 
     # os.chdir('../')
 
@@ -150,7 +167,7 @@ def main(delay_per_email, folder):
                     break
             s.append(smtp['Email'])
 
-            msg = MIMEMultipart()
+            # msg = MIMEMultipart()
 
             Email = smtp['Email']
             PassWord = smtp['Password']
@@ -159,6 +176,7 @@ def main(delay_per_email, folder):
             name = smtp['From']
             num = smtp['No_of_send']
             smtp['No_of_send'] = num+1
+            proxy = proxies[0]
             subject = subjects[0]
             Subject = subject['subjects']
             for file in csv_files:
@@ -167,19 +185,23 @@ def main(delay_per_email, folder):
                     Subject = Subject.replace(f"[{file.split('.')[0].replace('/','')}]", str(globals()[
                                               f"{file.split('.')[0].replace('/','')}"][0][f"{file.split('.')[0].replace('/','')}"]))
 
-            Subject = Header(Subject)
+            # Subject = Header(Subject)
             body = bodys[0]
             Body = body['body']
             Body_name = body['name'].split("\\")[1]
-            msg.set_charset('utf-8')
-            msg['Date'] = formatdate(localtime=True)
-            msg['Message-ID'] = make_msgid()
-            msg['Subject'] = Subject
-            msg['From'] = str(Header(f' {name}<{Email}>'))
-            msg['To'] = contact
+            email = chilkat.CkEmail()
+            email.put_Subject(Subject)
+            email.put_From(f"{name} <{Email}>")
+            success = email.AddTo("", contact)
+            # msg.set_charset('utf-8')
+            # msg['Date'] = formatdate(localtime=True)
+            # msg['Message-ID'] = make_msgid()
+            # msg['Subject'] = Subject
+            # msg['From'] = str(Header(f' {name}<{Email}>'))
+            # msg['To'] = contact
             # msg['Cc'] = Email
             # msg['Bcc'] = Email
-            msg['In-Reply-To'] = contact
+            # msg['In-Reply-To'] = contact
             # msg['References'] = contact
 
             randomnumber = random.randint(100000000000, 999999999999)
@@ -193,7 +215,7 @@ def main(delay_per_email, folder):
             for file in csv_files:
 
                 if "smtps" not in file:
-                    html = html.replace(f"[{file.split('.')[0].replace('/','')}]", str(globals()[
+                    html = html.replace(f"{{{file.split('.')[0].replace('/','')}}}", str(globals()[
                                         f"{file.split('.')[0].replace('/','')}"][0][f"{file.split('.')[0].replace('/','')}"]))
 
             no_links = 0
@@ -206,15 +228,18 @@ def main(delay_per_email, folder):
                 for index in range(no_links):
                     time.sleep(8)
                     html = html.replace(
-                        f"[image{index+1}]", generate(str(links[index]).replace("\n", "")))
+                        "{{"+f"image{index+1}"+"}}", generate(str(links[index]).replace("\n", "")))
 
-            html = html.replace("[randomnumber]", str(randomnumber))
-            html = html.replace("[alphanumeric]", str(alphanumeric))
-            html = html.replace("[code]", str(code))
-            html = html.replace("[date1]", str(date1))
-            html = html.replace("[date2]", str(date2))
-            part = MIMEText(html, 'html', 'utf-8')
-            msg.attach(part)
+            print(html)
+            time.sleep(10)
+            html = html.replace("{{randomnumber}}", str(randomnumber))
+            html = html.replace("{{alphanumeric}}", str(alphanumeric))
+            html = html.replace("{{code}}", str(code))
+            html = html.replace("{{date1}}", str(date1))
+            html = html.replace("{{date2}}", str(date2))
+            # part = MIMEText(html, 'html', 'utf-8')
+            # msg.attach(part)
+            email.SetHtmlBody(html)
             event = {
                 'type': 'send_message',
                 'message': f"Processing Data..."
@@ -226,39 +251,51 @@ def main(delay_per_email, folder):
             for file in attachments:
 
                 if Body_name == file.split("\\")[1].split('.')[0]:
-                    with open(f"{file}", 'rb') as f:
-                        file_data = f.read()
-                        file_name = f.name
-                    attach = MIMEBase(
-                        'application', 'octate-stream', Name=file_name)
-                    attach.set_payload(file_data)
-                    encoders.encode_base64(attach)
-                    attach.add_header('Content-Decomposition',
-                                      'attachment', filename=file.split("\\")[1])
-                    msg.attach(attach)
+                    contentType = email.addFileAttachment(
+                        f"{file}")
+                    if (email.get_LastMethodSuccess() != True):
+                        print(email.lastErrorText())
+                    # with open(f"{file}", 'rb') as f:
+                    #     file_data = f.read()
+                    #     file_name = f.name
+                    # attach = MIMEBase(
+                    #     'application', 'octate-stream', Name=file_name)
+                    # attach.set_payload(file_data)
+                    # encoders.encode_base64(attach)
+                    # attach.add_header('Content-Decomposition',
+                    #                   'attachment', filename=file.split("\\")[1])
+                    # msg.attach(attach)
 
             for image in images_jpg:
                 if Body_name == image.split("\\")[1].split('.')[0]:
+                    contentType = email.addFileAttachment(
+                        f"{file}")
+                    if (email.get_LastMethodSuccess() != True):
+                        print(email.lastErrorText())
 
-                    with open(f"{image}", 'rb') as f:
-                        file_data = f.read()
-                        file_name = f.name
-                    msgImage = MIMEImage(file_data, _subtype="jpg")
-                    msgImage.add_header('Content-ID', f'<{image}>')
-                    msgImage.add_header('Content-Disposition',
-                                        'attachment', filename=file_name)
-                    msg.attach(msgImage)
+                    # with open(f"{image}", 'rb') as f:
+                    #     file_data = f.read()
+                    #     file_name = f.name
+                    # msgImage = MIMEImage(file_data, _subtype="jpg")
+                    # msgImage.add_header('Content-ID', f'<{image}>')
+                    # msgImage.add_header('Content-Disposition',
+                    #                     'attachment', filename=file_name)
+                    # msg.attach(msgImage)
 
             for image in images_png:
                 if Body_name == image.split("\\")[1].split('.')[0]:
-                    with open(f"{image}", 'rb') as f:
-                        file_data = f.read()
-                        file_name = f.name
-                    msgImage = MIMEImage(file_data, _subtype="png")
-                    msgImage.add_header('Content-ID', f'<{image}>')
-                    msgImage.add_header('Content-Disposition',
-                                        'attachment', filename=file_name)
-                    msg.attach(msgImage)
+                    contentType = email.addFileAttachment(
+                        f"{file}")
+                    if (email.get_LastMethodSuccess() != True):
+                        print(email.lastErrorText())
+                    # with open(f"{image}", 'rb') as f:
+                    #     file_data = f.read()
+                    #     file_name = f.name
+                    # msgImage = MIMEImage(file_data, _subtype="png")
+                    # msgImage.add_header('Content-ID', f'<{image}>')
+                    # msgImage.add_header('Content-Disposition',
+                    #                     'attachment', filename=file_name)
+                    # msg.attach(msgImage)
 
             if UseHtmlConvertor == 'y':
 
@@ -281,7 +318,7 @@ def main(delay_per_email, folder):
                     attach.add_header('Content-Disposition',
                                       'attachment', filename=str(f'{Output_pdf_name}.pdf'))
                     print("created!")
-                    msg.attach(attach)
+                    # msg.attach(attach)
                     print("Pdf attached!")
                     os.remove(f'{Output_pdf_name}.pdf')
 
@@ -294,6 +331,18 @@ def main(delay_per_email, folder):
                     }
 
             flag = 0
+            mailman = chilkat.CkMailMan()
+            # mailman.put_HttpProxyAuthMethod("LOGIN")
+            mailman.put_HttpProxyHostname(str(proxy['ip']))
+            mailman.put_HttpProxyPort(int(proxy['port']))
+            mailman.put_HttpProxyUsername(str(proxy['username']))
+            mailman.put_HttpProxyPassword(str(proxy['password']))
+            # mailman.put_SocksVersion(5)
+            mailman.put_SmtpHost(SMTP)
+
+            mailman.put_SmtpUsername(Email)
+            mailman.put_SmtpPassword(PassWord)
+            mailman.put_SmtpPort(PORT)
             print("Sending...")
             event = {
                 'type': 'send_message',
@@ -312,98 +361,135 @@ def main(delay_per_email, folder):
             if not isrunning:
 
                 break
-            if("outlook.com" in Email.split("@") or "icloud.com" in Email.split("@")):
 
-                try:
-                    with smtplib.SMTP(SMTP, PORT) as smtp:
-                        smtp.ehlo()
-                        smtp.starttls()
-                        smtp.ehlo()
-                        smtp.login(Email, PassWord)
-                        smtp.sendmail(Email, contact, msg.as_string())
-                        smtp.quit()
-                        time.sleep(int(delay_per_email))
-                        with open(f"./logs.txt", 'a') as f:
-                            f.write('<br/> \n EMAIL SENDED TO ' +
-                                    contact)
-                            print('\n EMAIL SENDED TO '+contact)
-                            i += 1
-                            event = {
-                                'type': 'send_message',
-                                'message': f"EMAIL SENDED TO {contact}.(Total Email sent {i})",
-                                'isLog': True
-                            }
-                except Exception as e:
-                    print(e)
-                    flag = 1
-                    with open(f"./faulty_smtps.txt", 'a') as f:
+            try:
+                success = mailman.SendEmail(email)
+                if success != True:
+                    print(mailman.lastErrorText())
+                # time.sleep(delay_per_email)
+                with open(f"./logs.txt", 'a') as f:
+                    f.write('<br/> \n EMAIL SENDED TO ' +
+                            contact)
+                    print('\n EMAIL SENDED TO '+contact)
+                    i += 1
+                    event = {
+                        'type': 'send_message',
+                        'message': f"EMAIL SENDED TO {contact}.(Total Email sent {i})",
+                        'isLog': True
+                    }
+                success = mailman.CloseSmtpConnection()
+                if (success != True):
+                    print("Connection to SMTP server not closed cleanly.")
+
+            except Exception as e:
+                print(str(e))
+                print(mailman.lastErrorText())
+                flag = 1
+                with open(f"./faulty_smtps.txt", 'a') as f:
                         f.write('<br/> \n '+Email)
-                    with open(f"./logs.txt", 'a') as f:
-                        f.write('<br/> \n You have problem in '+Email)
-                        print('\n You have problem in '+Email)
-                        event = {
-                            'type': 'send_message',
-                            'message': f"You have problem in  {Email} , error: {str(e)}",
-                            'isLog': True
-                        }
-                async_to_sync(layer.group_send)(
+                with open(f"./logs.txt", 'a') as f:
+                    f.write('<br/> \n You have problem in '+Email)
+                    print('\n You have problem in '+Email)
+                    event = {
+                        'type': 'send_message',
+                        'message': f"You have problem in  {Email} , error: {str(e)}",
+                        'isLog': True
+                    }
+            async_to_sync(layer.group_send)(
                     'notification', event)
-            else:
+            
+            # if("outlook.com" in Email.split("@") or "icloud.com" in Email.split("@")):
 
-                try:
-                    # s = socks.socksocket()
-                    # s.set_proxy(socks.SOCKS5, "geo.iproyal.com", [
-                    #             22325, [True, ['prht2017', ['proxy2022']]]])
-                    # socks.set_default_proxy(
-                    #     socks.PROXY_TYPE_HTTP, "133.18.172.217", 8080)
-                    # # socket.socket = socks.socksocket
-                    # # print(requests.get('http://httpbin.org/ip').text)
-                    # socks.set_default_proxy(socks.SOCKS5, addr='geo.iproyal.com',
-                    #                         port=8080, rdns=True, username='prht2017', password='proxy2022')
-                    # socket.socket = socks.socksocket
-                    # sock = socket.socket()
+            #     try:
+            #         # with smtplib.SMTP(SMTP, PORT) as smtp:
+            #         #     smtp.ehlo()
+            #         #     smtp.starttls()
+            #         #     smtp.ehlo()
+            #         #     smtp.login(Email, PassWord)
+            #         #     smtp.sendmail(Email, contact, msg.as_string())
+            #         #     smtp.quit()
+            #         #     time.sleep(int(delay_per_email))
+            #             with open(f"./logs.txt", 'a') as f:
+            #                 f.write('<br/> \n EMAIL SENDED TO ' +
+            #                         contact)
+            #                 print('\n EMAIL SENDED TO '+contact)
+            #                 i += 1
+            #                 event = {
+            #                     'type': 'send_message',
+            #                     'message': f"EMAIL SENDED TO {contact}.(Total Email sent {i})",
+            #                     'isLog': True
+            #                 }
+            #     except Exception as e:
+            #         print(e)
+            #         flag = 1
+            #         with open(f"./faulty_smtps.txt", 'a') as f:
+            #             f.write('<br/> \n '+Email)
+            #         with open(f"./logs.txt", 'a') as f:
+            #             f.write('<br/> \n You have problem in '+Email)
+            #             print('\n You have problem in '+Email)
+            #             event = {
+            #                 'type': 'send_message',
+            #                 'message': f"You have problem in  {Email} , error: {str(e)}",
+            #                 'isLog': True
+            #             }
+            #     async_to_sync(layer.group_send)(
+            #         'notification', event)
+            # else:
 
-                    # socks.wrapmodule(smtplib)
-                    # ,proxy_addr="proxy.packetstream.io",proxy_port=3111,proxy_rdns=True,proxy_username="kuchbhientertainment",proxy_password="bhkXQOTQgJmyygXW"
-                    # print(1)
-                    # smtplib.SMTP._get_socket = socket.create_connection((SMTP,PORT))
+                # try:
+                #     # s = socks.socksocket()
+                #     # s.set_proxy(socks.SOCKS5, "geo.iproyal.com", [
+                #     #             22325, [True, ['prht2017', ['proxy2022']]]])
+                #     # socks.set_default_proxy(
+                #     #     socks.PROXY_TYPE_HTTP, "133.18.172.217", 8080)
+                #     # # socket.socket = socks.socksocket
+                #     # # print(requests.get('http://httpbin.org/ip').text)
+                #     # socks.set_default_proxy(socks.SOCKS5, addr='geo.iproyal.com',
+                #     #                         port=8080, rdns=True, username='prht2017', password='proxy2022')
+                #     # socket.socket = socks.socksocket
+                #     # sock = socket.socket()
 
-                    with smtplib.SMTP(SMTP, PORT) as smtp:
-                        # smtp.set_debuglevel(1)
+                #     # socks.wrapmodule(smtplib)
+                #     # ,proxy_addr="proxy.packetstream.io",proxy_port=3111,proxy_rdns=True,proxy_username="kuchbhientertainment",proxy_password="bhkXQOTQgJmyygXW"
+                #     # print(1)
+                #     # smtplib.SMTP._get_socket = socket.create_connection((SMTP,PORT))
 
-                        smtp.ehlo()
-                        smtp.starttls()
-                        smtp.ehlo()
-                        smtp.login(Email, PassWord)
-                        smtp.sendmail(Email, contact, msg.as_string())
-                        # smtp.send_message(msg)
-                        smtp.quit()
-                        time.sleep(int(delay_per_email))
-                        with open(f"./logs.txt", 'a') as f:
-                            f.write('<br/> \n EMAIL SENDED TO '+contact)
-                            print('\n EMAIL SENDED TO '+contact)
-                            i += 1
-                            event = {
-                                'type': 'send_message',
-                                'message': f"EMAIL SENDED TO {contact} .(Total Email sent {i})",
-                                'isLog': True
-                            }
-                except Exception as e:
-                    print(e)
-                    flag = 1
-                    with open(f"./faulty_smtps.txt", 'a') as f:
-                        f.write('<br/> \n '+Email)
+                #     # with smtplib.SMTP(SMTP, PORT) as smtp:
+                #     #     # smtp.set_debuglevel(1)
 
-                    with open(f"./logs.txt", 'a') as f:
-                        f.write('<br/> \n You have problem in '+Email)
-                        print('\n You have problem in '+Email)
-                        event = {
-                            'type': 'send_message',
-                            'message': f"You have problem in {Email} , error: {str(e)}",
-                            'isLog': True
-                        }
-                async_to_sync(layer.group_send)(
-                    'notification', event)
+                #     #     smtp.ehlo()
+                #     #     smtp.starttls()
+                #     #     smtp.ehlo()
+                #     #     smtp.login(Email, PassWord)
+                #     #     smtp.sendmail(Email, contact, msg.as_string())
+                #     #     # smtp.send_message(msg)
+                #     #     smtp.quit()
+                #         time.sleep(int(delay_per_email))
+                #         with open(f"./logs.txt", 'a') as f:
+                #             f.write('<br/> \n EMAIL SENDED TO '+contact)
+                #             print('\n EMAIL SENDED TO '+contact)
+                #             i += 1
+                #             event = {
+                #                 'type': 'send_message',
+                #                 'message': f"EMAIL SENDED TO {contact} .(Total Email sent {i})",
+                #                 'isLog': True
+                #             }
+                # except Exception as e:
+                #     print(e)
+                #     flag = 1
+                #     with open(f"./faulty_smtps.txt", 'a') as f:
+                #         f.write('<br/> \n '+Email)
+
+                #     with open(f"./logs.txt", 'a') as f:
+                #         f.write('<br/> \n You have problem in '+Email)
+                #         print('\n You have problem in '+Email)
+                #         event = {
+                #             'type': 'send_message',
+                #             'message': f"You have problem in {Email} , error: {str(e)}",
+                #             'isLog': True
+                #         }
+                # async_to_sync(layer.group_send)(
+                #     'notification', event)
 
             df_smtp = pd.read_csv(f'{folder}/smtps.csv')
             time.sleep(5)
@@ -429,6 +515,7 @@ def main(delay_per_email, folder):
         leftRotate(phone_no, 1)
         leftRotate(subjects, 1)
         leftRotate(bodys, 1)
+        leftRotate(proxies, 1)
         for file in csv_files:
 
             if "smtps" not in file and "contacts" not in file:

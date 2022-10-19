@@ -570,7 +570,7 @@
             )
             document.getElementById("start").innerHTML = "STOP"
             document.getElementById("log").innerHTML += "loading..."
-            document.getElementById("draggable").innerHTML += "loading..."
+            document.getElementById("logging").innerHTML += "loading..."
             $.get("dashboard/" + pk, function (data) {
                 if (data.isDataNotUploaded) {
                     $("#toast-danger").css("visibility", "visible")
